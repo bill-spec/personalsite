@@ -18,19 +18,19 @@ subtitle = ""
   icon = "r-project"
   icon_pack = "fab"
   name = "R"
-  description = "des"
+  description = "Experienced in general statistical analysis and adpet at general machine learning techniques."
   
 [[feature]]
   icon = "python"
   icon_pack = "fab"
   name = "Python"
-  description = "des"  
+  description = ""  
   
 [[feature]]
   icon = "java"
   icon_pack = "fab"
   name = "Java"
-  description = "des"
+  description = ""
   
  
 

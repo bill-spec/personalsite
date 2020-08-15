@@ -9,9 +9,9 @@ education:
     year: 2021
 email: ""
 interests:
-- 1
-- 2
-- 3
+- Economics
+- Statistics
+- Machine Learning
 organizations:
 - name: University of Pittsburgh
   url: ""
@@ -36,4 +36,4 @@ user_groups:
 - Visitors
 ---
 
-My name is Bill Lang.
+My name is Bill Lang, this is my blogdown site. Although this site stated as a simple practice project I now use this as a professional an personal nexus. Here you will find stuff about my professional experience and personal projects that I'm currently working on. I have a seperate site for tutoring that can be accessed from the main panel.
