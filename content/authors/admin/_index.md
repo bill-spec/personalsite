@@ -16,13 +16,13 @@ organizations:
 - name: University of Pittsburgh
   url: ""
 role: Student at University of Pittsburgh
-social:
+social: 
 - icon: envelope
   icon_pack: fas
-  link: https://twitter.com/bill_of_lefts_
+  link: 
 - icon: twitter
   icon_pack: fab
-  link: 
+  link: https://twitter.com/bill_of_lefts_
 - icon: linkedin
   icon_pack: fab
   link: https://www.linkedin.com/in/bill-lang-8a91a6145/
@@ -36,4 +36,4 @@ user_groups:
 - Visitors
 ---
 
-My name is Bill Lang, this is my blogdown site. Although this site stated as a simple practice project I now use this as a professional an personal nexus. Here you will find stuff about my professional experience and personal projects that I'm currently working on. I have a seperate site for tutoring that can be accessed from the main panel.
+My name is Bill Lang, this is my blogdown site. Although this site stated as a simple practice project I now use this as a professional an personal nexus. Here you will find stuff about my professional experience and personal projects that I'm currently working on. 

@@ -19,14 +19,18 @@ date_format = "Jan 2006"
 #   Begin/end multi-line descriptions with 3 quotes `"""`.
 
 [[experience]]
-  title = "Linehaul Intern"
+  title = "Linehaul Analytics Intern"
   company = "FedEx Ground"
   company_url = ""
   location = "Pittsburgh"
   date_start = "2020-07-08"
-  date_end = ""
+  date_end = "2020-08-20"
   description = """
-
+  Projects completed:
+  
+  * Developed compliance analytics dashboards for the linehaul department.
+  * Automated data transfer through the linehaul sharepoint system for ease of access for field operations. 
+  * Constructed and presented a report on empty pickup issues.
   """
 
 [[experience]]
@@ -39,8 +43,9 @@ date_format = "Jan 2006"
   description = """
   Responsibilties include:
   
-  * Operate on managing, cleaning, and analyzing datasets for several projects for the University of Pittsburgh Department of Economics.
-  * Focus on home and land value fluctuations with respect to large city projects using historical data and geocoding systems. Responsibilities includes data wrangling in Excel, R, and utilization of ArcGIS software for visualization.
+  * Manage, clean, and analyze datasets for several projects for the University of Pittsburgh Department of Economics.
+  * Implemented a classification machine learning model to identify the location of incomplete rows of data. 
+  * Tools include R for data wrangaling and utilization of ArcGIS software for visualization.
 """
 
 [[experience]]
