@@ -93,21 +93,6 @@ x2 &amp;lt;- rnorm(10000, 7, 1.5)
 a &amp;lt;- as.data.frame(cbind(x1,x2)) %&amp;gt;% 
   pivot_longer(cols  =c(x1,x2), names_to = &amp;quot;Distribution&amp;quot;, values_to = &amp;quot;Value&amp;quot;) %&amp;gt;% 
   mutate(Distribution = as.factor(Distribution))
-a
-## # A tibble: 20,000 x 2
-##    Distribution Value
-##    &amp;lt;fct&amp;gt;        &amp;lt;dbl&amp;gt;
-##  1 x1            2.90
-##  2 x2            6.30
-##  3 x1            5.78
-##  4 x2            7.89
-##  5 x1            5.21
-##  6 x2            6.55
-##  7 x1            3.73
-##  8 x2            8.96
-##  9 x1            4.38
-## 10 x2            7.67
-## # ... with 19,990 more rows
 
 a %&amp;gt;% ggplot(mapping = aes(x = Value, fill = Distribution)) +
   geom_histogram(bins = 50, position = &amp;quot;identity&amp;quot;, alpha = 0.7)+

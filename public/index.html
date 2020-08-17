@@ -1163,32 +1163,13 @@
 
 
 
-
-
-
   
 
 
-<div class="media stream-item">
-  <div class="media-body">
+<div class="card-simple">
 
-    <h3 class="article-title mb-0 mt-0">
-      <a href="/post/r-markdown-first/2015-07-23-r-rmarkdown/" >Hello Blog Posts</a>
-    </h3>
-
+  
     
-    <div class="article-style">
-      R MarkdownThis is an Rmarkdown first post to test.
-set.seed(343)x1 &lt;- rnorm(10000, 5, 1.5)x2 &lt;- rnorm(10000, 7, 1.5)a &lt;- as.data.frame(cbind(x1,x2)) %&gt;% pivot_longer(cols =c(x1,x2), names_to = &quot;Distribution&quot;, values_to = &quot;Value&quot;) %&gt;% mutate(Distribution = as.
-    </div>
-    
-
-    <div class="stream-meta article-metadata">
-
-      
-
-      
-        
 
 
 <div class="article-metadata">
@@ -1228,16 +1209,25 @@ set.seed(343)x1 &lt;- rnorm(10000, 5, 1.5)x2 &lt;- rnorm(10000, 7, 1.5)a &lt;
 
 </div>
 
-      
-    </div>
+  
 
-    
+  
+  
+  
 
+  <h3 class="article-title mb-1 mt-3">
+    <a href="/post/r-markdown-first/2015-07-23-r-rmarkdown/">Hello Blog Posts</a>
+  </h3>
+
+  
+  <div class="article-style">
+    <p>R MarkdownThis is an Rmarkdown first post to test.
+set.seed(343)x1 &lt;- rnorm(10000, 5, 1.5)x2 &lt;- rnorm(10000, 7, 1.5)a &lt;- as.data.frame(cbind(x1,x2)) %&gt;% pivot_longer(cols =c(x1,x2), names_to = &quot;Distribution&quot;, values_to = &quot;Value&quot;) %&gt;% mutate(Distribution = as.</p>
   </div>
-  <div class="ml-3">
-    
-    
-  </div>
+  
+
+  
+
 </div>
 
       
@@ -1302,11 +1292,10 @@ set.seed(343)x1 &lt;- rnorm(10000, 5, 1.5)x2 &lt;- rnorm(10000, 7, 1.5)a &lt;
     
     
       
-      
     
 
     <div class="mb-3">
-      <form name="contact" method="POST" action="https://formspree.io/billylang21@gmail.com">
+      <form name="contact" method="POST" netlify>
         <div class="form-group form-inline">
           <label class="sr-only" for="inputName">Name</label>
           <input type="text" name="name" class="form-control w-100" id="inputName" placeholder="Name" required>
