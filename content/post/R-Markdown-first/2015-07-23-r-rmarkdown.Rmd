@@ -1,0 +1,35 @@
+---
+title: "Hello Blog Posts"
+author: "Frida Gomam"
+date: 2020-07-23T21:13:14-05:00
+categories: [""]
+tags: [""]
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(collapse = TRUE)
+library(tidyverse)
+library(ggthemes)
+```
+
+# R Markdown
+
+This is an Rmarkdown first post to test. 
+
+
+
+```{r}
+set.seed(343)
+x1 <- rnorm(10000, 5, 1.5)
+x2 <- rnorm(10000, 7, 1.5)
+a <- as.data.frame(cbind(x1,x2)) %>% 
+  pivot_longer(cols  =c(x1,x2), names_to = "Distribution", values_to = "Value") %>% 
+  mutate(Distribution = as.factor(Distribution))
+
+a %>% ggplot(mapping = aes(x = Value, fill = Distribution)) +
+  geom_histogram(bins = 50, position = "identity", alpha = 0.7)+
+  ylab("Frequency")+
+  theme_stata()+
+  scale_fill_discrete(labels = c("Red Hill", "Blue Hill"))
+```
+
