@@ -45,7 +45,7 @@ date_format = "Jan 2006"
   
   * Manage, clean, and analyze datasets for several projects for the University of Pittsburgh Department of Economics.
   * Implemented a classification machine learning model to identify the location of incomplete rows of data. 
-  * Tools include R for data wrangaling and utilization of ArcGIS software for visualization.
+  * Tools include R for data wrangling and utilization of ArcGIS software for visualization.
 """
 
 [[experience]]
