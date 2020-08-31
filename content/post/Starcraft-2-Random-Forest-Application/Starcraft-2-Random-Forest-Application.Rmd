@@ -16,7 +16,6 @@ library(ggthemes)
 load(file = "cleanedLeague.RData")
 ```
 
-
 Brief Introduction 
 
 Competetive video games allow for the collection of an immense amount of data on its players than would otherwise be collectable in a regular competition. Using this data is much easier to quanitfy the difference between a good player and a great player. One of the most native games to pursure this analysis in is Starcraft. Starcraft and its sequels are the most popular real time strategy games of the last two decades, has open datasets available to use, and (most importantly) it's one of my favorite games of all time. 
