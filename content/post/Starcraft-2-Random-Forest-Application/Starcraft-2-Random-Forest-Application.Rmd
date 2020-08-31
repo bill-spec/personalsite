@@ -16,8 +16,6 @@ library(ggthemes)
 load(file = "cleanedLeague.RData")
 ```
 
-Brief Introduction 
-
 Competetive video games allow for the collection of an immense amount of data on its players than would otherwise be collectable in a regular competition. Using this data is much easier to quanitfy the difference between a good player and a great player. One of the most native games to pursure this analysis in is Starcraft. Starcraft and its sequels are the most popular real time strategy games of the last two decades, has open datasets available to use, and (most importantly) it's one of my favorite games of all time. 
 
 This is mostly to test some simple machine learning tools and apply them to a regular dataset. The code below will use a lasso regularization model to clear out uninportant variables. Then I run a random forest to try and predict the skill league of a given player (each row).

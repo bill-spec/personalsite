@@ -27,8 +27,7 @@
   
     
   
-  <meta name="description" content="Data Investigation
-glimpse(leagueData)## Rows: 3,328## Columns: 20## $ LeagueIndex &lt;int&gt; 3, 3, 5, 5, 6, 5, 4, 6, 6, 5, 5, 7, 5, 6, 5, 5, .">
+  <meta name="description" content="Competetive video games allow for the collection of an immense amount of data on its players than would otherwise be collectable in a regular competition. Using this data is much easier to quanitfy the difference between a good player and a great player.">
 
   
   <link rel="alternate" hreflang="en-us" href="/post/starcraft-2-random-forest-application/starcraft-2-random-forest-application/">
@@ -234,8 +233,7 @@ glimpse(leagueData)## Rows: 3,328## Columns: 20## $ LeagueIndex &lt;int&gt; 3
   <meta property="og:site_name" content="Bill Lang">
   <meta property="og:url" content="/post/starcraft-2-random-forest-application/starcraft-2-random-forest-application/">
   <meta property="og:title" content="Starcraft 2 Random Forest Application | Bill Lang">
-  <meta property="og:description" content="Data Investigation
-glimpse(leagueData)## Rows: 3,328## Columns: 20## $ LeagueIndex &lt;int&gt; 3, 3, 5, 5, 6, 5, 4, 6, 6, 5, 5, 7, 5, 6, 5, 5, ."><meta property="og:image" content="/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_2.png">
+  <meta property="og:description" content="Competetive video games allow for the collection of an immense amount of data on its players than would otherwise be collectable in a regular competition. Using this data is much easier to quanitfy the difference between a good player and a great player."><meta property="og:image" content="/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_2.png">
   <meta property="twitter:image" content="/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_2.png"><meta property="og:locale" content="en-us">
   
     
@@ -285,7 +283,7 @@ glimpse(leagueData)## Rows: 3,328## Columns: 20## $ LeagueIndex &lt;int&gt; 3
       "url": "/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_192x192_fill_lanczos_center_2.png"
     }
   },
-  "description": "Data Investigation\nglimpse(leagueData)\r## Rows: 3,328\r## Columns: 20\r## $ LeagueIndex \u0026lt;int\u0026gt; 3, 3, 5, 5, 6, 5, 4, 6, 6, 5, 5, 7, 5, 6, 5, 5, ."
+  "description": "Competetive video games allow for the collection of an immense amount of data on its players than would otherwise be collectable in a regular competition. Using this data is much easier to quanitfy the difference between a good player and a great player."
 }
 </script>
 
@@ -480,35 +478,6 @@ glimpse(leagueData)## Rows: 3,328## Columns: 20## $ LeagueIndex &lt;int&gt; 3
         
         
         
-          
-          
-          
-            
-          
-          
-        
-
-        <li class="nav-item">
-          <a class="nav-link " href="/#projects"><span>Projects</span></a>
-        </li>
-
-        
-        
-
-        
-
-        
-        
-        
-          
-        
-
-        
-        
-        
-        
-        
-        
 
         <li class="nav-item">
           <a class="nav-link " href="/courses/"><span>Tutoring</span></a>
@@ -657,7 +626,7 @@ glimpse(leagueData)## Rows: 3,328## Columns: 20## $ LeagueIndex &lt;int&gt; 3
   
   <span class="middot-divider"></span>
   <span class="article-reading-time">
-    3 min read
+    6 min read
   </span>
   
 
@@ -700,7 +669,10 @@ glimpse(leagueData)## Rows: 3,328## Columns: 20## $ LeagueIndex &lt;int&gt; 3
       
 
 
+<p>Competetive video games allow for the collection of an immense amount of data on its players than would otherwise be collectable in a regular competition. Using this data is much easier to quanitfy the difference between a good player and a great player. One of the most native games to pursure this analysis in is Starcraft. Starcraft and its sequels are the most popular real time strategy games of the last two decades, has open datasets available to use, and (most importantly) it’s one of my favorite games of all time.</p>
+<p>This is mostly to test some simple machine learning tools and apply them to a regular dataset. The code below will use a lasso regularization model to clear out uninportant variables. Then I run a random forest to try and predict the skill league of a given player (each row).</p>
 <p>Data Investigation</p>
+<p>The dataset sourced <a href="http://archive.ics.uci.edu/ml/datasets/SkillCraft1%20Master%20Table%20Dataset">here</a> gives 19 predictor variables that we can use for a simple analsis. I cleaned it before using it in this analysis. Each varible realted to the entire game is standardized by the total timestamp of the game itself (e.g. WorkersMade is the )</p>
 <pre class="r"><code>glimpse(leagueData)</code></pre>
 <pre><code>## Rows: 3,328
 ## Columns: 20
@@ -724,13 +696,20 @@ glimpse(leagueData)## Rows: 3,328## Columns: 20## $ LeagueIndex &lt;int&gt; 3
 ## $ ComplexUnitsMade   &lt;dbl&gt; 0.000238011, 0.000000000, 0.000041500, 0.0000000...
 ## $ ComplexAbilityUsed &lt;dbl&gt; 0.00194820, 0.00001680, 0.00029913, 0.00000000, ...
 ## $ MaxTimeStamp       &lt;int&gt; 113440, 59644, 120348, 78752, 93984, 57812, 8542...</code></pre>
-<p>The GGally library creates appealing graphics for simple correlation analysis and viewing, something that base R seriously lacks. I make use of it here to manuely make note of varible importance.</p>
+<p>The GGally library creates appealing graphics for simple correlation analysis, something that base R seriously lacks. I make use of it here to manuely make note of varible importance. APM and Action Latency certainly stand out, interestingly, the TotalMapExplored variable had near no correlation to LeagueIndex.</p>
 <pre class="r"><code>ggcorr(leagueData[,1:19], method = c(&quot;everything&quot;, &quot;pearson&quot;), geom = &quot;tile&quot;,layout.exp = 4, nbreaks = 5, hjust = 1) +
   theme(legend.position = &quot;right&quot;)</code></pre>
 <p><img src="/post/Starcraft-2-Random-Forest-Application/Starcraft-2-Random-Forest-Application_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
-<p>For simplicity I only decided to use on regularization technique, the lasso (least absolute shrinkage and selection operator; what a cool name). I made use of the glmnet package for most of the heavy lifting and interpret the results below.</p>
-<p>Lasso</p>
-<pre class="r"><code>set.seed(343)</code></pre>
+<p>A cursory plotting of these two variables reveals how they are distributed amoung the leagues. Of note is the difference between APM and ActionLatency between Masters and GrandMasters (thetop two leagues), we can see that the mean of ActionLatency in Grandmaster Players appears slightly more important at differentiating between Masters and Grandmasters than APM.</p>
+<pre class="r"><code>pairPlot &lt;- leagueData %&gt;% 
+  mutate(LeagueIndex = as.factor(LeagueIndex)) %&gt;% 
+  ggpairs(columns = c(&quot;LeagueIndex&quot;,&quot;APM&quot;,&quot;ActionLatency&quot;),ggplot2::aes(colour=LeagueIndex, alpha = 0.2),progress = FALSE) 
+suppressMessages(print(pairPlot))</code></pre>
+<p><img src="/post/Starcraft-2-Random-Forest-Application/Starcraft-2-Random-Forest-Application_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+<p>For simplicity I only decided to use one regularization technique, the lasso (least absolute shrinkage and selection operator; what a cool name). I made use of the glmnet package for most of the heavy lifting and interpret the results below.</p>
+<p>The LASSO solves the following equation:</p>
+<p>Minimize <span class="math display">\[\{\sum_{i=1}^{n}(y_i-\beta_0-\sum_{j=1}^{p}\beta_jx_ij \}\]</span> Subject To <span class="math display">\[\sum_{j=1}^{p}|\beta_j| \le s\]</span></p>
+<p>Which is a regular least squares regression with a penalty of <span class="math inline">\(s\)</span> given to large coefficients. This method can be used to introduce bias to a model that is dominated by singular large coefficients and it will also sent insigifigant variable coefficients to 0.</p>
 <pre class="r"><code>set.seed(343)
 shuf &lt;- sample(1:nrow(leagueData))
 leagueData &lt;- leagueData[shuf,]
@@ -761,38 +740,64 @@ lassoCoef</code></pre>
 ##      -1.937111e-02       4.661160e-03       2.816095e+02       1.605034e+02 
 ##    UniqueUnitsMade   ComplexUnitsMade ComplexAbilityUsed       MaxTimeStamp 
 ##       1.515732e+03       3.978425e+02       1.120704e+01       0.000000e+00</code></pre>
+<p>Now we can remove those variables that our lasso model found insignificant.</p>
+<pre class="r"><code>lassoData &lt;- leagueData %&gt;% select(-HoursPerWeek,-MinimapRightClicks,-MaxTimeStamp)</code></pre>
+<p>It’s always important to cross validate results when working with any predictive modeling. Here I manually create 10 divisions in the shuffled data and loop through the model creation process to get a mean standard error.</p>
 <p>Building and cross validation a naive linear model.</p>
 <pre class="r"><code>div1 &lt;- c(0,333,665,998,1330,1662,1994,2326,2658,2990)
 div2 &lt;- c(332,664,997,1329,1661,1993,2325,2657,2989,3328)
 div1;div2</code></pre>
 <pre><code>##  [1]    0  333  665  998 1330 1662 1994 2326 2658 2990</code></pre>
 <pre><code>##  [1]  332  664  997 1329 1661 1993 2325 2657 2989 3328</code></pre>
-<pre class="r"><code>shuf &lt;- sample(nrow(leagueData))
-leagueShuffed &lt;- leagueData[shuf,]</code></pre>
+<pre class="r"><code>shuf &lt;- sample(nrow(lassoData))
+leagueShuffed &lt;- lassoData[shuf,]</code></pre>
 <pre class="r"><code>error &lt;- c(1:10)
-error</code></pre>
-<pre><code>##  [1]  1  2  3  4  5  6  7  8  9 10</code></pre>
-<pre class="r"><code>for(j in 1:10){
-  
+for(j in 1:10){
   testing &lt;- leagueShuffed[c(div1[j]:div2[j]),]
   training &lt;- leagueShuffed[-c(div1[j]:div2[j]),]
-  
-
     mod &lt;- lm(LeagueIndex~., data = training)
     yhat &lt;- predict(mod, newdata = testing)
     MSE &lt;- mean( (yhat - testing$LeagueIndex)^2 )
     error[j] &lt;- MSE
-
+}
+which(error == min(error), arr.ind = TRUE);min(error)</code></pre>
+<pre><code>## [1] 7</code></pre>
+<pre><code>## [1] 0.8146089</code></pre>
+<pre class="r"><code>ggplot(as.data.frame(error), aes(x=error)) + geom_histogram(bins = 10,color=&quot;black&quot;, fill=&quot;lightgreen&quot;)+
+    xlab(&quot;Error Rate&quot;)+
+    ylab(&quot;Frequency&quot;)+
+    theme_light()</code></pre>
+<p><img src="/post/Starcraft-2-Random-Forest-Application/Starcraft-2-Random-Forest-Application_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+<p>Building and cross validation a Random Forest Regression Model.</p>
+<p>Manual cross-validation for both the error rate and the mtry parameter. The default for the mtry of this packages is <span class="math inline">\(\sqrt p\)</span> which would be <span class="math inline">\(4.5\)</span>, however, cross validation found anything between <span class="math inline">\(3\)</span> and <span class="math inline">\(9\)</span> provided the best results. It can be seen that this model outperforms the linear model that came before.</p>
+<pre class="r"><code>set.seed(343)
+div1 &lt;- c(0,333,665,998,1330,1662,1994,2326,2658,2990)
+div2 &lt;- c(332,664,997,1329,1661,1993,2325,2657,2989,3328)
+div1;div2</code></pre>
+<pre><code>##  [1]    0  333  665  998 1330 1662 1994 2326 2658 2990</code></pre>
+<pre><code>##  [1]  332  664  997 1329 1661 1993 2325 2657 2989 3328</code></pre>
+<pre class="r"><code>shuf &lt;- sample(nrow(lassoData))
+leagueShuffed &lt;- leagueData[shuf,]</code></pre>
+<pre class="r"><code>error2 &lt;- c(1:10)
+for(j in 1:10){
+  
+  testing &lt;- leagueShuffed[c(div1[j]:div2[j]),]
+  training &lt;- leagueShuffed[-c(div1[j]:div2[j]),]
+  
+    mod &lt;- randomForest(LeagueIndex~., mtry = 5, ntrees = 1000, data = training)
+    yhat &lt;- predict(mod, newdata = testing)
+    MSE &lt;- mean( (yhat - testing$LeagueIndex)^2 )
+    error2[j] &lt;- MSE
 }
 
-error</code></pre>
-<pre><code>##  [1] 0.9300085 0.8301405 0.8647285 0.9395159 0.8979064 0.9145124 0.8176298
-##  [8] 0.9554274 0.9930924 1.0857931</code></pre>
-<pre class="r"><code>which(error == min(error), arr.ind = TRUE);min(error)</code></pre>
-<pre><code>## [1] 7</code></pre>
-<pre><code>## [1] 0.8176298</code></pre>
-<pre class="r"><code>hist(error)</code></pre>
-<p><img src="/post/Starcraft-2-Random-Forest-Application/Starcraft-2-Random-Forest-Application_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+which(error2 == min(error), arr.ind = TRUE);min(error2)</code></pre>
+<pre><code>## integer(0)</code></pre>
+<pre><code>## [1] 0.747122</code></pre>
+<pre class="r"><code>ggplot(as.data.frame(error2), aes(x=error2)) + geom_histogram(bins = 10,color=&quot;black&quot;, fill=&quot;lightgreen&quot;)+
+    xlab(&quot;Error Rate&quot;)+
+    ylab(&quot;Frequency&quot;)+
+    theme_light()</code></pre>
+<p><img src="/post/Starcraft-2-Random-Forest-Application/Starcraft-2-Random-Forest-Application_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
 
     </div>
 
@@ -931,23 +936,6 @@ error</code></pre>
         <h6 class="card-subtitle">Student at University of Pittsburgh</h6>
         
         <ul class="network-icon" aria-hidden="true">
-  
-    
-    
-    
-      
-    
-    
-    
-    
-    
-      
-    
-    <li>
-      <a href="/" >
-        <i class="fas fa-envelope"></i>
-      </a>
-    </li>
   
     
     

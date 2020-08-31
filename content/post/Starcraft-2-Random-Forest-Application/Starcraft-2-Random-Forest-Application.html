@@ -1,0 +1,139 @@
+---
+title: "Starcraft 2 Random Forest Application"
+author: "Bill Lang"
+date: 2020-07-23T21:13:14-05:00
+categories: [""]
+tags: [""]
+---
+
+
+
+<p>Competetive video games allow for the collection of an immense amount of data on its players than would otherwise be collectable in a regular competition. Using this data is much easier to quanitfy the difference between a good player and a great player. One of the most native games to pursure this analysis in is Starcraft. Starcraft and its sequels are the most popular real time strategy games of the last two decades, has open datasets available to use, and (most importantly) it’s one of my favorite games of all time.</p>
+<p>This is mostly to test some simple machine learning tools and apply them to a regular dataset. The code below will use a lasso regularization model to clear out uninportant variables. Then I run a random forest to try and predict the skill league of a given player (each row).</p>
+<p>Data Investigation</p>
+<p>The dataset sourced <a href="http://archive.ics.uci.edu/ml/datasets/SkillCraft1%20Master%20Table%20Dataset">here</a> gives 19 predictor variables that we can use for a simple analsis. I cleaned it before using it in this analysis. Each varible realted to the entire game is standardized by the total timestamp of the game itself (e.g. WorkersMade is the )</p>
+<pre class="r"><code>glimpse(leagueData)</code></pre>
+<pre><code>## Rows: 3,328
+## Columns: 20
+## $ LeagueIndex        &lt;int&gt; 3, 3, 5, 5, 6, 5, 4, 6, 6, 5, 5, 7, 5, 6, 5, 5, ...
+## $ Age                &lt;int&gt; 19, 16, 20, 16, 21, 23, 19, 16, 23, 25, 23, 22, ...
+## $ HoursPerWeek       &lt;int&gt; 20, 16, 40, 30, 20, 10, 28, 28, 8, 8, 30, 56, 42...
+## $ TotalHours         &lt;int&gt; 6000, 6000, 5000, 5000, 5000, 5000, 4000, 4000, ...
+## $ APM                &lt;dbl&gt; 102.0114, 153.8010, 84.7086, 160.4754, 141.6486,...
+## $ SelectByHotkeys    &lt;dbl&gt; 0.002045134, 0.001676615, 0.001113438, 0.0042538...
+## $ AssignToHotkeys    &lt;dbl&gt; 0.000317348, 0.000318557, 0.000083100, 0.0004317...
+## $ UniqueHotkeys      &lt;dbl&gt; 0.000044100, 0.000067100, 0.000016600, 0.0000254...
+## $ MinimapAttacks     &lt;dbl&gt; 0.000044100, 0.000000000, 0.000240968, 0.0007745...
+## $ MinimapRightClicks &lt;dbl&gt; 0.000555360, 0.000821541, 0.000398843, 0.0004063...
+## $ NumberOfPACs       &lt;dbl&gt; 0.003032440, 0.003772383, 0.003124273, 0.0045713...
+## $ GapBetweenPACs     &lt;dbl&gt; 62.5423, 23.4107, 48.5120, 36.2897, 21.6465, 32....
+## $ ActionLatency      &lt;dbl&gt; 67.3140, 48.0711, 62.6064, 46.8889, 50.4786, 42....
+## $ ActionsInPAC       &lt;dbl&gt; 6.3605, 7.0044, 4.5585, 5.4361, 4.9244, 4.8434, ...
+## $ TotalMapExplored   &lt;dbl&gt; 0.000211566, 0.000402387, 0.000207731, 0.0003555...
+## $ WorkersMade        &lt;dbl&gt; 0.00141040, 0.00159280, 0.00125470, 0.00198090, ...
+## $ UniqueUnitsMade    &lt;dbl&gt; 0.000052900, 0.000117363, 0.000058200, 0.0000889...
+## $ ComplexUnitsMade   &lt;dbl&gt; 0.000238011, 0.000000000, 0.000041500, 0.0000000...
+## $ ComplexAbilityUsed &lt;dbl&gt; 0.00194820, 0.00001680, 0.00029913, 0.00000000, ...
+## $ MaxTimeStamp       &lt;int&gt; 113440, 59644, 120348, 78752, 93984, 57812, 8542...</code></pre>
+<p>The GGally library creates appealing graphics for simple correlation analysis, something that base R seriously lacks. I make use of it here to manuely make note of varible importance. APM and Action Latency certainly stand out, interestingly, the TotalMapExplored variable had near no correlation to LeagueIndex.</p>
+<pre class="r"><code>ggcorr(leagueData[,1:19], method = c(&quot;everything&quot;, &quot;pearson&quot;), geom = &quot;tile&quot;,layout.exp = 4, nbreaks = 5, hjust = 1) +
+  theme(legend.position = &quot;right&quot;)</code></pre>
+<p><img src="/post/Starcraft-2-Random-Forest-Application/Starcraft-2-Random-Forest-Application_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
+<p>A cursory plotting of these two variables reveals how they are distributed amoung the leagues. Of note is the difference between APM and ActionLatency between Masters and GrandMasters (thetop two leagues), we can see that the mean of ActionLatency in Grandmaster Players appears slightly more important at differentiating between Masters and Grandmasters than APM.</p>
+<pre class="r"><code>pairPlot &lt;- leagueData %&gt;% 
+  mutate(LeagueIndex = as.factor(LeagueIndex)) %&gt;% 
+  ggpairs(columns = c(&quot;LeagueIndex&quot;,&quot;APM&quot;,&quot;ActionLatency&quot;),ggplot2::aes(colour=LeagueIndex, alpha = 0.2),progress = FALSE) 
+suppressMessages(print(pairPlot))</code></pre>
+<p><img src="/post/Starcraft-2-Random-Forest-Application/Starcraft-2-Random-Forest-Application_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+<p>For simplicity I only decided to use one regularization technique, the lasso (least absolute shrinkage and selection operator; what a cool name). I made use of the glmnet package for most of the heavy lifting and interpret the results below.</p>
+<p>The LASSO solves the following equation:</p>
+<p>Minimize <span class="math display">\[\{\sum_{i=1}^{n}(y_i-\beta_0-\sum_{j=1}^{p}\beta_jx_ij \}\]</span> Subject To <span class="math display">\[\sum_{j=1}^{p}|\beta_j| \le s\]</span></p>
+<p>Which is a regular least squares regression with a penalty of <span class="math inline">\(s\)</span> given to large coefficients. This method can be used to introduce bias to a model that is dominated by singular large coefficients and it will also sent insigifigant variable coefficients to 0.</p>
+<pre class="r"><code>set.seed(343)
+shuf &lt;- sample(1:nrow(leagueData))
+leagueData &lt;- leagueData[shuf,]
+
+x &lt;- model.matrix(LeagueIndex~.,leagueData)[,-1]
+y &lt;- leagueData$LeagueIndex
+
+
+lassoModel &lt;- cv.glmnet(x = x[1:2500,], y = y[1:2500], alpha =1) 
+plot(lassoModel)</code></pre>
+<p><img src="/post/Starcraft-2-Random-Forest-Application/Starcraft-2-Random-Forest-Application_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+<pre class="r"><code>bestlam &lt;- lassoModel$lambda.min
+lassoPred &lt;- predict(lassoModel,s = bestlam, newx = x[2501:3000,])
+mean((lassoPred - y[2501:3000])^2)</code></pre>
+<pre><code>## [1] 0.8350452</code></pre>
+<pre class="r"><code>bestlam</code></pre>
+<pre><code>## [1] 0.008444181</code></pre>
+<pre class="r"><code>out &lt;- glmnet(x,y,alpha =1, lambda = bestlam)
+lassoCoef &lt;- predict(out,type = &quot;coefficients&quot;,s=bestlam)[1:20,]
+lassoCoef</code></pre>
+<pre><code>##        (Intercept)                Age       HoursPerWeek         TotalHours 
+##       3.581101e+00       3.142228e-03       0.000000e+00       4.771748e-04 
+##                APM    SelectByHotkeys    AssignToHotkeys      UniqueHotkeys 
+##       7.289465e-04       2.409891e+01       7.605980e+02       2.566430e+03 
+##     MinimapAttacks MinimapRightClicks       NumberOfPACs     GapBetweenPACs 
+##       9.286935e+02       0.000000e+00       2.046341e+02      -9.964851e-03 
+##      ActionLatency       ActionsInPAC   TotalMapExplored        WorkersMade 
+##      -1.937111e-02       4.661160e-03       2.816095e+02       1.605034e+02 
+##    UniqueUnitsMade   ComplexUnitsMade ComplexAbilityUsed       MaxTimeStamp 
+##       1.515732e+03       3.978425e+02       1.120704e+01       0.000000e+00</code></pre>
+<p>Now we can remove those variables that our lasso model found insignificant.</p>
+<pre class="r"><code>lassoData &lt;- leagueData %&gt;% select(-HoursPerWeek,-MinimapRightClicks,-MaxTimeStamp)</code></pre>
+<p>It’s always important to cross validate results when working with any predictive modeling. Here I manually create 10 divisions in the shuffled data and loop through the model creation process to get a mean standard error.</p>
+<p>Building and cross validation a naive linear model.</p>
+<pre class="r"><code>div1 &lt;- c(0,333,665,998,1330,1662,1994,2326,2658,2990)
+div2 &lt;- c(332,664,997,1329,1661,1993,2325,2657,2989,3328)
+div1;div2</code></pre>
+<pre><code>##  [1]    0  333  665  998 1330 1662 1994 2326 2658 2990</code></pre>
+<pre><code>##  [1]  332  664  997 1329 1661 1993 2325 2657 2989 3328</code></pre>
+<pre class="r"><code>shuf &lt;- sample(nrow(lassoData))
+leagueShuffed &lt;- lassoData[shuf,]</code></pre>
+<pre class="r"><code>error &lt;- c(1:10)
+for(j in 1:10){
+  testing &lt;- leagueShuffed[c(div1[j]:div2[j]),]
+  training &lt;- leagueShuffed[-c(div1[j]:div2[j]),]
+    mod &lt;- lm(LeagueIndex~., data = training)
+    yhat &lt;- predict(mod, newdata = testing)
+    MSE &lt;- mean( (yhat - testing$LeagueIndex)^2 )
+    error[j] &lt;- MSE
+}
+which(error == min(error), arr.ind = TRUE);min(error)</code></pre>
+<pre><code>## [1] 7</code></pre>
+<pre><code>## [1] 0.8146089</code></pre>
+<pre class="r"><code>ggplot(as.data.frame(error), aes(x=error)) + geom_histogram(bins = 10,color=&quot;black&quot;, fill=&quot;lightgreen&quot;)+
+    xlab(&quot;Error Rate&quot;)+
+    ylab(&quot;Frequency&quot;)+
+    theme_light()</code></pre>
+<p><img src="/post/Starcraft-2-Random-Forest-Application/Starcraft-2-Random-Forest-Application_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+<p>Building and cross validation a Random Forest Regression Model.</p>
+<p>Manual cross-validation for both the error rate and the mtry parameter. The default for the mtry of this packages is <span class="math inline">\(\sqrt p\)</span> which would be <span class="math inline">\(4.5\)</span>, however, cross validation found anything between <span class="math inline">\(3\)</span> and <span class="math inline">\(9\)</span> provided the best results. It can be seen that this model outperforms the linear model that came before.</p>
+<pre class="r"><code>set.seed(343)
+div1 &lt;- c(0,333,665,998,1330,1662,1994,2326,2658,2990)
+div2 &lt;- c(332,664,997,1329,1661,1993,2325,2657,2989,3328)
+div1;div2</code></pre>
+<pre><code>##  [1]    0  333  665  998 1330 1662 1994 2326 2658 2990</code></pre>
+<pre><code>##  [1]  332  664  997 1329 1661 1993 2325 2657 2989 3328</code></pre>
+<pre class="r"><code>shuf &lt;- sample(nrow(lassoData))
+leagueShuffed &lt;- leagueData[shuf,]</code></pre>
+<pre class="r"><code>error2 &lt;- c(1:10)
+for(j in 1:10){
+  
+  testing &lt;- leagueShuffed[c(div1[j]:div2[j]),]
+  training &lt;- leagueShuffed[-c(div1[j]:div2[j]),]
+  
+    mod &lt;- randomForest(LeagueIndex~., mtry = 5, ntrees = 1000, data = training)
+    yhat &lt;- predict(mod, newdata = testing)
+    MSE &lt;- mean( (yhat - testing$LeagueIndex)^2 )
+    error2[j] &lt;- MSE
+}
+
+which(error2 == min(error), arr.ind = TRUE);min(error2)</code></pre>
+<pre><code>## integer(0)</code></pre>
+<pre><code>## [1] 0.747122</code></pre>
+<pre class="r"><code>ggplot(as.data.frame(error2), aes(x=error2)) + geom_histogram(bins = 10,color=&quot;black&quot;, fill=&quot;lightgreen&quot;)+
+    xlab(&quot;Error Rate&quot;)+
+    ylab(&quot;Frequency&quot;)+
+    theme_light()</code></pre>
+<p><img src="/post/Starcraft-2-Random-Forest-Application/Starcraft-2-Random-Forest-Application_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
