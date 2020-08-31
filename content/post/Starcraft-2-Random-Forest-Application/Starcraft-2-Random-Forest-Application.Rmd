@@ -110,7 +110,6 @@ for(j in 1:10){
     error[j] <- MSE
 }
 which(error == min(error), arr.ind = TRUE);min(error)
-?geom_histogram
 ggplot(as.data.frame(error), aes(x=error)) + geom_histogram(bins = 10,color="black", fill="lightgreen")+
     xlab("Error Rate")+
     ylab("Frequency")+
