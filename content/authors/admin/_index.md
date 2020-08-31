@@ -4,7 +4,10 @@ authors:
 bio:  
 education:
   courses:
-  - course: Economics-Statistics 
+  - course: Economics-Statistics Major
+    institution: University of Pittsburgh
+    year: 2021
+  - course: Computer Science Minor
     institution: University of Pittsburgh
     year: 2021
 email: ""
@@ -17,9 +20,6 @@ organizations:
   url: ""
 role: Student at University of Pittsburgh
 social: 
-- icon: envelope
-  icon_pack: fas
-  link: 
 - icon: twitter
   icon_pack: fab
   link: https://twitter.com/bill_of_lefts_
@@ -36,4 +36,4 @@ user_groups:
 - Visitors
 ---
 
-My name is Bill Lang, this is my blogdown site. Although this site stated as a simple practice project I now use this as a professional an personal nexus. Here you will find stuff about my professional experience and personal projects that I'm currently working on. 
+My name is Bill Lang, this is my blogdown site. Although this site stated as a simple practice project I now use this as a professional and personal nexus. Here you will find stuff about my professional experience and personal projects that I'm currently working on. 
