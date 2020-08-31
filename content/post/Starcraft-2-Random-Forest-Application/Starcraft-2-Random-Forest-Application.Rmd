@@ -131,27 +131,23 @@ leagueShuffed <- leagueData[shuf,]
 ```
 
 ```{r}
-errors <- matrix(nrow = 10, ncol = 19)
+error2 <- c(1:10)
 for(j in 1:10){
   
   testing <- leagueShuffed[c(div1[j]:div2[j]),]
   training <- leagueShuffed[-c(div1[j]:div2[j]),]
   
-  for(i in 1:19){
-    mod <- randomForest(LeagueIndex~., mtry = i, ntrees = 1000, data = training)
+    mod <- randomForest(LeagueIndex~., mtry = 5, ntrees = 1000, data = training)
     yhat <- predict(mod, newdata = testing)
     MSE <- mean( (yhat - testing$LeagueIndex)^2 )
-    errors[j,i] <- MSE
-  }
+    error2[j] <- MSE
 }
 
-errors <- errors %>% pivot_longer(V1:V19, names_to = "mtry", values_to = "ErrorRate")
-errors %>% filter(mtry == "V10")
-ggplot(errors, mapping = aes(ErrorRate)) + 
-  geom_histogram(bins = 10,color="black", fill="lightgreen")+
-  xlab("Error Rate")+
-  ylab("Frequency")+
-  theme_light()
+which(error2 == min(error), arr.ind = TRUE);min(error2)
+ggplot(as.data.frame(error2), aes(x=error2)) + geom_histogram(bins = 10,color="black", fill="lightgreen")+
+    xlab("Error Rate")+
+    ylab("Frequency")+
+    theme_light()
 ```
 
 
