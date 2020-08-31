@@ -1,0 +1,161 @@
+---
+title: "Starcraft 2 Random Forest Application"
+author: "Bill Lang"
+date: 2020-07-23T21:13:14-05:00
+categories: [""]
+tags: [""]
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(glmnet)
+library(GGally)
+library(randomForest)
+library(ggthemes)
+load(file = "cleanedLeague.RData")
+```
+
+
+Brief Introduction 
+
+Competetive video games allow for the collection of an immense amount of data on its players than would otherwise be collectable in a regular competition. Using this data is much easier to quanitfy the difference between a good player and a great player. One of the most native games to pursure this analysis in is Starcraft. Starcraft and its sequels are the most popular real time strategy games of the last two decades, has open datasets available to use, and (most importantly) it's one of my favorite games of all time. 
+
+This is mostly to test some simple machine learning tools and apply them to a regular dataset. The code below will use a lasso regularization model to clear out uninportant variables. Then I run a random forest to try and predict the skill league of a given player (each row).
+
+Data Investigation 
+
+The dataset sourced [here](http://archive.ics.uci.edu/ml/datasets/SkillCraft1%20Master%20Table%20Dataset) gives 19 predictor variables that we can use for a simple analsis. I cleaned it before using it in this analysis. Each varible realted to the entire game is standardized by the total timestamp of the game itself (e.g. WorkersMade is the )
+
+```{r}
+glimpse(leagueData)
+```
+
+The GGally library creates appealing graphics for simple correlation analysis, something that base R seriously lacks. I make use of it here to manuely make note of varible importance. APM and Action Latency certainly stand out, interestingly, the TotalMapExplored variable had near no correlation to LeagueIndex.
+
+```{r}
+ggcorr(leagueData[,1:19], method = c("everything", "pearson"), geom = "tile",layout.exp = 4, nbreaks = 5, hjust = 1) +
+  theme(legend.position = "right")
+```
+
+A cursory plotting of these two variables reveals how they are distributed amoung the leagues. Of note is the difference between APM and ActionLatency between Masters and GrandMasters (thetop two leagues), we can see that the mean of ActionLatency in Grandmaster Players appears slightly more important at differentiating between Masters and Grandmasters than APM.
+
+```{r}
+pairPlot <- leagueData %>% 
+  mutate(LeagueIndex = as.factor(LeagueIndex)) %>% 
+  ggpairs(columns = c("LeagueIndex","APM","ActionLatency"),ggplot2::aes(colour=LeagueIndex, alpha = 0.2),progress = FALSE) 
+suppressMessages(print(pairPlot))
+```
+
+
+For simplicity I only decided to use one regularization technique, the lasso (least absolute shrinkage and selection operator; what a cool name). I made use of the glmnet package for most of the heavy lifting and interpret the results below.
+
+The LASSO solves the following equation: 
+
+Minimize $$\{\sum_{i=1}^{n}(y_i-\beta_0-\sum_{j=1}^{p}\beta_jx_ij \}$$ Subject To $$\sum_{j=1}^{p}|\beta_j| \le s$$
+
+Which is a regular least squares regression with a penalty of $s$ given to large coefficients. This method can be used to introduce bias to a model that is dominated by singular large coefficients and it will also sent insigifigant variable coefficients to 0.
+
+
+```{r}
+set.seed(343)
+shuf <- sample(1:nrow(leagueData))
+leagueData <- leagueData[shuf,]
+
+x <- model.matrix(LeagueIndex~.,leagueData)[,-1]
+y <- leagueData$LeagueIndex
+
+
+lassoModel <- cv.glmnet(x = x[1:2500,], y = y[1:2500], alpha =1) 
+plot(lassoModel)
+bestlam <- lassoModel$lambda.min
+lassoPred <- predict(lassoModel,s = bestlam, newx = x[2501:3000,])
+mean((lassoPred - y[2501:3000])^2)
+bestlam
+```
+
+```{r}
+out <- glmnet(x,y,alpha =1, lambda = bestlam)
+lassoCoef <- predict(out,type = "coefficients",s=bestlam)[1:20,]
+lassoCoef
+```
+
+Now we can remove those variables that our lasso model found insignificant. 
+
+```{r}
+lassoData <- leagueData %>% select(-HoursPerWeek,-MinimapRightClicks,-MaxTimeStamp)
+```
+
+
+It's always important to cross validate results when working with any predictive modeling. Here I manually create 10 divisions in the shuffled data and loop through the model creation process to get a mean standard error.
+
+Building and cross validation a naive linear model.
+
+```{r}
+div1 <- c(0,333,665,998,1330,1662,1994,2326,2658,2990)
+div2 <- c(332,664,997,1329,1661,1993,2325,2657,2989,3328)
+div1;div2
+shuf <- sample(nrow(lassoData))
+leagueShuffed <- lassoData[shuf,]
+```
+
+```{r}
+error <- c(1:10)
+for(j in 1:10){
+  testing <- leagueShuffed[c(div1[j]:div2[j]),]
+  training <- leagueShuffed[-c(div1[j]:div2[j]),]
+    mod <- lm(LeagueIndex~., data = training)
+    yhat <- predict(mod, newdata = testing)
+    MSE <- mean( (yhat - testing$LeagueIndex)^2 )
+    error[j] <- MSE
+}
+which(error == min(error), arr.ind = TRUE);min(error)
+?geom_histogram
+ggplot(as.data.frame(error), aes(x=error)) + geom_histogram(bins = 10,color="black", fill="lightgreen")+
+    xlab("Error Rate")+
+    ylab("Frequency")+
+    theme_light()
+```
+
+
+Building and cross validation a Random Forest Regression Model.
+
+
+Manual cross-validation for both the error rate and the mtry parameter. The default for the mtry of this packages is $\sqrt p$ which would be $4.5$, however, cross validation found anything between $3$ and $9$ provided the best results. It can be seen that this model outperforms the linear model that came before. 
+
+```{r}
+set.seed(343)
+div1 <- c(0,333,665,998,1330,1662,1994,2326,2658,2990)
+div2 <- c(332,664,997,1329,1661,1993,2325,2657,2989,3328)
+div1;div2
+shuf <- sample(nrow(lassoData))
+leagueShuffed <- leagueData[shuf,]
+```
+
+```{r}
+errors <- matrix(nrow = 10, ncol = 19)
+for(j in 1:10){
+  
+  testing <- leagueShuffed[c(div1[j]:div2[j]),]
+  training <- leagueShuffed[-c(div1[j]:div2[j]),]
+  
+  for(i in 1:19){
+    mod <- randomForest(LeagueIndex~., mtry = i, ntrees = 1000, data = training)
+    yhat <- predict(mod, newdata = testing)
+    MSE <- mean( (yhat - testing$LeagueIndex)^2 )
+    errors[j,i] <- MSE
+  }
+}
+
+errors <- errors %>% pivot_longer(V1:V19, names_to = "mtry", values_to = "ErrorRate")
+errors %>% filter(mtry == "V10")
+ggplot(errors, mapping = aes(ErrorRate)) + 
+  geom_histogram(bins = 10,color="black", fill="lightgreen")+
+  xlab("Error Rate")+
+  ylab("Frequency")+
+  theme_light()
+```
+
+
+
+ 

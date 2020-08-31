@@ -40,5 +40,109 @@ a %&amp;gt;% ggplot(mapping = aes(x = Value, fill = Distribution)) +
 </description>
     </item>
     
+    <item>
+      <title>Starcraft 2 Random Forest Application</title>
+      <link>/post/starcraft-2-random-forest-application/starcraft-2-random-forest-application/</link>
+      <pubDate>Thu, 23 Jul 2020 21:13:14 -0500</pubDate>
+      <guid>/post/starcraft-2-random-forest-application/starcraft-2-random-forest-application/</guid>
+      <description>
+
+
+&lt;p&gt;Data Investigation&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;glimpse(leagueData)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## Rows: 3,328
+## Columns: 20
+## $ LeagueIndex        &amp;lt;int&amp;gt; 3, 3, 5, 5, 6, 5, 4, 6, 6, 5, 5, 7, 5, 6, 5, 5, ...
+## $ Age                &amp;lt;int&amp;gt; 19, 16, 20, 16, 21, 23, 19, 16, 23, 25, 23, 22, ...
+## $ HoursPerWeek       &amp;lt;int&amp;gt; 20, 16, 40, 30, 20, 10, 28, 28, 8, 8, 30, 56, 42...
+## $ TotalHours         &amp;lt;int&amp;gt; 6000, 6000, 5000, 5000, 5000, 5000, 4000, 4000, ...
+## $ APM                &amp;lt;dbl&amp;gt; 102.0114, 153.8010, 84.7086, 160.4754, 141.6486,...
+## $ SelectByHotkeys    &amp;lt;dbl&amp;gt; 0.002045134, 0.001676615, 0.001113438, 0.0042538...
+## $ AssignToHotkeys    &amp;lt;dbl&amp;gt; 0.000317348, 0.000318557, 0.000083100, 0.0004317...
+## $ UniqueHotkeys      &amp;lt;dbl&amp;gt; 0.000044100, 0.000067100, 0.000016600, 0.0000254...
+## $ MinimapAttacks     &amp;lt;dbl&amp;gt; 0.000044100, 0.000000000, 0.000240968, 0.0007745...
+## $ MinimapRightClicks &amp;lt;dbl&amp;gt; 0.000555360, 0.000821541, 0.000398843, 0.0004063...
+## $ NumberOfPACs       &amp;lt;dbl&amp;gt; 0.003032440, 0.003772383, 0.003124273, 0.0045713...
+## $ GapBetweenPACs     &amp;lt;dbl&amp;gt; 62.5423, 23.4107, 48.5120, 36.2897, 21.6465, 32....
+## $ ActionLatency      &amp;lt;dbl&amp;gt; 67.3140, 48.0711, 62.6064, 46.8889, 50.4786, 42....
+## $ ActionsInPAC       &amp;lt;dbl&amp;gt; 6.3605, 7.0044, 4.5585, 5.4361, 4.9244, 4.8434, ...
+## $ TotalMapExplored   &amp;lt;dbl&amp;gt; 0.000211566, 0.000402387, 0.000207731, 0.0003555...
+## $ WorkersMade        &amp;lt;dbl&amp;gt; 0.00141040, 0.00159280, 0.00125470, 0.00198090, ...
+## $ UniqueUnitsMade    &amp;lt;dbl&amp;gt; 0.000052900, 0.000117363, 0.000058200, 0.0000889...
+## $ ComplexUnitsMade   &amp;lt;dbl&amp;gt; 0.000238011, 0.000000000, 0.000041500, 0.0000000...
+## $ ComplexAbilityUsed &amp;lt;dbl&amp;gt; 0.00194820, 0.00001680, 0.00029913, 0.00000000, ...
+## $ MaxTimeStamp       &amp;lt;int&amp;gt; 113440, 59644, 120348, 78752, 93984, 57812, 8542...&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;The GGally library creates appealing graphics for simple correlation analysis and viewing, something that base R seriously lacks. I make use of it here to manuely make note of varible importance.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;ggcorr(leagueData[,1:19], method = c(&amp;quot;everything&amp;quot;, &amp;quot;pearson&amp;quot;), geom = &amp;quot;tile&amp;quot;,layout.exp = 4, nbreaks = 5, hjust = 1) +
+  theme(legend.position = &amp;quot;right&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/post/Starcraft-2-Random-Forest-Application/Starcraft-2-Random-Forest-Application_files/figure-html/unnamed-chunk-2-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;For simplicity I only decided to use on regularization technique, the lasso (least absolute shrinkage and selection operator; what a cool name). I made use of the glmnet package for most of the heavy lifting and interpret the results below.&lt;/p&gt;
+&lt;p&gt;Lasso&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;set.seed(343)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;set.seed(343)
+shuf &amp;lt;- sample(1:nrow(leagueData))
+leagueData &amp;lt;- leagueData[shuf,]
+
+x &amp;lt;- model.matrix(LeagueIndex~.,leagueData)[,-1]
+y &amp;lt;- leagueData$LeagueIndex
+
+
+lassoModel &amp;lt;- cv.glmnet(x = x[1:2500,], y = y[1:2500], alpha =1) 
+plot(lassoModel)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/post/Starcraft-2-Random-Forest-Application/Starcraft-2-Random-Forest-Application_files/figure-html/unnamed-chunk-4-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;bestlam &amp;lt;- lassoModel$lambda.min
+lassoPred &amp;lt;- predict(lassoModel,s = bestlam, newx = x[2501:3000,])
+mean((lassoPred - y[2501:3000])^2)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## [1] 0.8350452&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;bestlam&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## [1] 0.008444181&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;out &amp;lt;- glmnet(x,y,alpha =1, lambda = bestlam)
+lassoCoef &amp;lt;- predict(out,type = &amp;quot;coefficients&amp;quot;,s=bestlam)[1:20,]
+lassoCoef&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;##        (Intercept)                Age       HoursPerWeek         TotalHours 
+##       3.581101e+00       3.142228e-03       0.000000e+00       4.771748e-04 
+##                APM    SelectByHotkeys    AssignToHotkeys      UniqueHotkeys 
+##       7.289465e-04       2.409891e+01       7.605980e+02       2.566430e+03 
+##     MinimapAttacks MinimapRightClicks       NumberOfPACs     GapBetweenPACs 
+##       9.286935e+02       0.000000e+00       2.046341e+02      -9.964851e-03 
+##      ActionLatency       ActionsInPAC   TotalMapExplored        WorkersMade 
+##      -1.937111e-02       4.661160e-03       2.816095e+02       1.605034e+02 
+##    UniqueUnitsMade   ComplexUnitsMade ComplexAbilityUsed       MaxTimeStamp 
+##       1.515732e+03       3.978425e+02       1.120704e+01       0.000000e+00&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Building and cross validation a naive linear model.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;div1 &amp;lt;- c(0,333,665,998,1330,1662,1994,2326,2658,2990)
+div2 &amp;lt;- c(332,664,997,1329,1661,1993,2325,2657,2989,3328)
+div1;div2&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;##  [1]    0  333  665  998 1330 1662 1994 2326 2658 2990&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;##  [1]  332  664  997 1329 1661 1993 2325 2657 2989 3328&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;shuf &amp;lt;- sample(nrow(leagueData))
+leagueShuffed &amp;lt;- leagueData[shuf,]&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;error &amp;lt;- c(1:10)
+error&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;##  [1]  1  2  3  4  5  6  7  8  9 10&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;for(j in 1:10){
+  
+  testing &amp;lt;- leagueShuffed[c(div1[j]:div2[j]),]
+  training &amp;lt;- leagueShuffed[-c(div1[j]:div2[j]),]
+  
+
+    mod &amp;lt;- lm(LeagueIndex~., data = training)
+    yhat &amp;lt;- predict(mod, newdata = testing)
+    MSE &amp;lt;- mean( (yhat - testing$LeagueIndex)^2 )
+    error[j] &amp;lt;- MSE
+
+}
+
+error&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;##  [1] 0.9300085 0.8301405 0.8647285 0.9395159 0.8979064 0.9145124 0.8176298
+##  [8] 0.9554274 0.9930924 1.0857931&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;which(error == min(error), arr.ind = TRUE);min(error)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## [1] 7&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## [1] 0.8176298&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;hist(error)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/post/Starcraft-2-Random-Forest-Application/Starcraft-2-Random-Forest-Application_files/figure-html/unnamed-chunk-7-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+</description>
+    </item>
+    
   </channel>
 </rss>

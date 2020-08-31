@@ -27,11 +27,11 @@
   
     
   
-  <meta name="description" content="R MarkdownThis is an Rmarkdown first post to test.
-set.seed(343)x1 &lt;- rnorm(10000, 5, 1.5)x2 &lt;- rnorm(10000, 7, 1.5)a &lt;- as.data.frame(cbind(x1,x2)) %&gt;% pivot_longer(cols =c(x1,x2), names_to = &quot;Distribution&quot;, values_to = &quot;Value&quot;) %&gt;% mutate(Distribution = as.">
+  <meta name="description" content="Data Investigation
+glimpse(leagueData)## Rows: 3,328## Columns: 20## $ LeagueIndex &lt;int&gt; 3, 3, 5, 5, 6, 5, 4, 6, 6, 5, 5, 7, 5, 6, 5, 5, .">
 
   
-  <link rel="alternate" hreflang="en-us" href="/post/r-markdown-first/2015-07-23-r-rmarkdown/">
+  <link rel="alternate" hreflang="en-us" href="/post/starcraft-2-random-forest-application/starcraft-2-random-forest-application/">
 
   
 
@@ -216,7 +216,7 @@ set.seed(343)x1 &lt;- rnorm(10000, 5, 1.5)x2 &lt;- rnorm(10000, 7, 1.5)a &lt;
   <link rel="icon" type="image/png" href="/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_32x32_fill_lanczos_center_2.png">
   <link rel="apple-touch-icon" type="image/png" href="/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_192x192_fill_lanczos_center_2.png">
 
-  <link rel="canonical" href="/post/r-markdown-first/2015-07-23-r-rmarkdown/">
+  <link rel="canonical" href="/post/starcraft-2-random-forest-application/starcraft-2-random-forest-application/">
 
   
   
@@ -232,10 +232,10 @@ set.seed(343)x1 &lt;- rnorm(10000, 5, 1.5)x2 &lt;- rnorm(10000, 7, 1.5)a &lt;
   <meta property="twitter:card" content="summary">
   
   <meta property="og:site_name" content="Bill Lang">
-  <meta property="og:url" content="/post/r-markdown-first/2015-07-23-r-rmarkdown/">
-  <meta property="og:title" content="Hello Blog Posts | Bill Lang">
-  <meta property="og:description" content="R MarkdownThis is an Rmarkdown first post to test.
-set.seed(343)x1 &lt;- rnorm(10000, 5, 1.5)x2 &lt;- rnorm(10000, 7, 1.5)a &lt;- as.data.frame(cbind(x1,x2)) %&gt;% pivot_longer(cols =c(x1,x2), names_to = &quot;Distribution&quot;, values_to = &quot;Value&quot;) %&gt;% mutate(Distribution = as."><meta property="og:image" content="/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_2.png">
+  <meta property="og:url" content="/post/starcraft-2-random-forest-application/starcraft-2-random-forest-application/">
+  <meta property="og:title" content="Starcraft 2 Random Forest Application | Bill Lang">
+  <meta property="og:description" content="Data Investigation
+glimpse(leagueData)## Rows: 3,328## Columns: 20## $ LeagueIndex &lt;int&gt; 3, 3, 5, 5, 6, 5, 4, 6, 6, 5, 5, 7, 5, 6, 5, 5, ."><meta property="og:image" content="/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_2.png">
   <meta property="twitter:image" content="/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_2.png"><meta property="og:locale" content="en-us">
   
     
@@ -265,9 +265,9 @@ set.seed(343)x1 &lt;- rnorm(10000, 5, 1.5)x2 &lt;- rnorm(10000, 7, 1.5)a &lt;
   "@type": "BlogPosting",
   "mainEntityOfPage": {
     "@type": "WebPage",
-    "@id": "/post/r-markdown-first/2015-07-23-r-rmarkdown/"
+    "@id": "/post/starcraft-2-random-forest-application/starcraft-2-random-forest-application/"
   },
-  "headline": "Hello Blog Posts",
+  "headline": "Starcraft 2 Random Forest Application",
   
   "datePublished": "2020-07-23T21:13:14-05:00",
   "dateModified": "2020-07-23T21:13:14-05:00",
@@ -285,7 +285,7 @@ set.seed(343)x1 &lt;- rnorm(10000, 5, 1.5)x2 &lt;- rnorm(10000, 7, 1.5)a &lt;
       "url": "/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_192x192_fill_lanczos_center_2.png"
     }
   },
-  "description": "R Markdown\rThis is an Rmarkdown first post to test.\nset.seed(343)\rx1 \u0026lt;- rnorm(10000, 5, 1.5)\rx2 \u0026lt;- rnorm(10000, 7, 1.5)\ra \u0026lt;- as.data.frame(cbind(x1,x2)) %\u0026gt;% pivot_longer(cols =c(x1,x2), names_to = \u0026quot;Distribution\u0026quot;, values_to = \u0026quot;Value\u0026quot;) %\u0026gt;% mutate(Distribution = as."
+  "description": "Data Investigation\nglimpse(leagueData)\r## Rows: 3,328\r## Columns: 20\r## $ LeagueIndex \u0026lt;int\u0026gt; 3, 3, 5, 5, 6, 5, 4, 6, 6, 5, 5, 7, 5, 6, 5, 5, ."
 }
 </script>
 
@@ -303,7 +303,7 @@ set.seed(343)x1 &lt;- rnorm(10000, 5, 1.5)x2 &lt;- rnorm(10000, 7, 1.5)a &lt;
 
 
 
-  <title>Hello Blog Posts | Bill Lang</title>
+  <title>Starcraft 2 Random Forest Application | Bill Lang</title>
 
 </head>
 
@@ -629,7 +629,7 @@ set.seed(343)x1 &lt;- rnorm(10000, 5, 1.5)x2 &lt;- rnorm(10000, 7, 1.5)a &lt;
   
   
 <div class="article-container pt-3">
-  <h1>Hello Blog Posts</h1>
+  <h1>Starcraft 2 Random Forest Application</h1>
 
   
 
@@ -657,7 +657,7 @@ set.seed(343)x1 &lt;- rnorm(10000, 5, 1.5)x2 &lt;- rnorm(10000, 7, 1.5)a &lt;
   
   <span class="middot-divider"></span>
   <span class="article-reading-time">
-    1 min read
+    3 min read
   </span>
   
 
@@ -700,23 +700,99 @@ set.seed(343)x1 &lt;- rnorm(10000, 5, 1.5)x2 &lt;- rnorm(10000, 7, 1.5)a &lt;
       
 
 
-<div id="r-markdown" class="section level1">
-<h1>R Markdown</h1>
-<p>This is an Rmarkdown first post to test.</p>
+<p>Data Investigation</p>
+<pre class="r"><code>glimpse(leagueData)</code></pre>
+<pre><code>## Rows: 3,328
+## Columns: 20
+## $ LeagueIndex        &lt;int&gt; 3, 3, 5, 5, 6, 5, 4, 6, 6, 5, 5, 7, 5, 6, 5, 5, ...
+## $ Age                &lt;int&gt; 19, 16, 20, 16, 21, 23, 19, 16, 23, 25, 23, 22, ...
+## $ HoursPerWeek       &lt;int&gt; 20, 16, 40, 30, 20, 10, 28, 28, 8, 8, 30, 56, 42...
+## $ TotalHours         &lt;int&gt; 6000, 6000, 5000, 5000, 5000, 5000, 4000, 4000, ...
+## $ APM                &lt;dbl&gt; 102.0114, 153.8010, 84.7086, 160.4754, 141.6486,...
+## $ SelectByHotkeys    &lt;dbl&gt; 0.002045134, 0.001676615, 0.001113438, 0.0042538...
+## $ AssignToHotkeys    &lt;dbl&gt; 0.000317348, 0.000318557, 0.000083100, 0.0004317...
+## $ UniqueHotkeys      &lt;dbl&gt; 0.000044100, 0.000067100, 0.000016600, 0.0000254...
+## $ MinimapAttacks     &lt;dbl&gt; 0.000044100, 0.000000000, 0.000240968, 0.0007745...
+## $ MinimapRightClicks &lt;dbl&gt; 0.000555360, 0.000821541, 0.000398843, 0.0004063...
+## $ NumberOfPACs       &lt;dbl&gt; 0.003032440, 0.003772383, 0.003124273, 0.0045713...
+## $ GapBetweenPACs     &lt;dbl&gt; 62.5423, 23.4107, 48.5120, 36.2897, 21.6465, 32....
+## $ ActionLatency      &lt;dbl&gt; 67.3140, 48.0711, 62.6064, 46.8889, 50.4786, 42....
+## $ ActionsInPAC       &lt;dbl&gt; 6.3605, 7.0044, 4.5585, 5.4361, 4.9244, 4.8434, ...
+## $ TotalMapExplored   &lt;dbl&gt; 0.000211566, 0.000402387, 0.000207731, 0.0003555...
+## $ WorkersMade        &lt;dbl&gt; 0.00141040, 0.00159280, 0.00125470, 0.00198090, ...
+## $ UniqueUnitsMade    &lt;dbl&gt; 0.000052900, 0.000117363, 0.000058200, 0.0000889...
+## $ ComplexUnitsMade   &lt;dbl&gt; 0.000238011, 0.000000000, 0.000041500, 0.0000000...
+## $ ComplexAbilityUsed &lt;dbl&gt; 0.00194820, 0.00001680, 0.00029913, 0.00000000, ...
+## $ MaxTimeStamp       &lt;int&gt; 113440, 59644, 120348, 78752, 93984, 57812, 8542...</code></pre>
+<p>The GGally library creates appealing graphics for simple correlation analysis and viewing, something that base R seriously lacks. I make use of it here to manuely make note of varible importance.</p>
+<pre class="r"><code>ggcorr(leagueData[,1:19], method = c(&quot;everything&quot;, &quot;pearson&quot;), geom = &quot;tile&quot;,layout.exp = 4, nbreaks = 5, hjust = 1) +
+  theme(legend.position = &quot;right&quot;)</code></pre>
+<p><img src="/post/Starcraft-2-Random-Forest-Application/Starcraft-2-Random-Forest-Application_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
+<p>For simplicity I only decided to use on regularization technique, the lasso (least absolute shrinkage and selection operator; what a cool name). I made use of the glmnet package for most of the heavy lifting and interpret the results below.</p>
+<p>Lasso</p>
+<pre class="r"><code>set.seed(343)</code></pre>
 <pre class="r"><code>set.seed(343)
-x1 &lt;- rnorm(10000, 5, 1.5)
-x2 &lt;- rnorm(10000, 7, 1.5)
-a &lt;- as.data.frame(cbind(x1,x2)) %&gt;% 
-  pivot_longer(cols  =c(x1,x2), names_to = &quot;Distribution&quot;, values_to = &quot;Value&quot;) %&gt;% 
-  mutate(Distribution = as.factor(Distribution))
+shuf &lt;- sample(1:nrow(leagueData))
+leagueData &lt;- leagueData[shuf,]
 
-a %&gt;% ggplot(mapping = aes(x = Value, fill = Distribution)) +
-  geom_histogram(bins = 50, position = &quot;identity&quot;, alpha = 0.7)+
-  ylab(&quot;Frequency&quot;)+
-  theme_stata()+
-  scale_fill_discrete(labels = c(&quot;Red Hill&quot;, &quot;Blue Hill&quot;))</code></pre>
-<p><img src="/post/R-Markdown-first/2015-07-23-r-rmarkdown_files/figure-html/unnamed-chunk-1-1.png" width="672" /></p>
-</div>
+x &lt;- model.matrix(LeagueIndex~.,leagueData)[,-1]
+y &lt;- leagueData$LeagueIndex
+
+
+lassoModel &lt;- cv.glmnet(x = x[1:2500,], y = y[1:2500], alpha =1) 
+plot(lassoModel)</code></pre>
+<p><img src="/post/Starcraft-2-Random-Forest-Application/Starcraft-2-Random-Forest-Application_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+<pre class="r"><code>bestlam &lt;- lassoModel$lambda.min
+lassoPred &lt;- predict(lassoModel,s = bestlam, newx = x[2501:3000,])
+mean((lassoPred - y[2501:3000])^2)</code></pre>
+<pre><code>## [1] 0.8350452</code></pre>
+<pre class="r"><code>bestlam</code></pre>
+<pre><code>## [1] 0.008444181</code></pre>
+<pre class="r"><code>out &lt;- glmnet(x,y,alpha =1, lambda = bestlam)
+lassoCoef &lt;- predict(out,type = &quot;coefficients&quot;,s=bestlam)[1:20,]
+lassoCoef</code></pre>
+<pre><code>##        (Intercept)                Age       HoursPerWeek         TotalHours 
+##       3.581101e+00       3.142228e-03       0.000000e+00       4.771748e-04 
+##                APM    SelectByHotkeys    AssignToHotkeys      UniqueHotkeys 
+##       7.289465e-04       2.409891e+01       7.605980e+02       2.566430e+03 
+##     MinimapAttacks MinimapRightClicks       NumberOfPACs     GapBetweenPACs 
+##       9.286935e+02       0.000000e+00       2.046341e+02      -9.964851e-03 
+##      ActionLatency       ActionsInPAC   TotalMapExplored        WorkersMade 
+##      -1.937111e-02       4.661160e-03       2.816095e+02       1.605034e+02 
+##    UniqueUnitsMade   ComplexUnitsMade ComplexAbilityUsed       MaxTimeStamp 
+##       1.515732e+03       3.978425e+02       1.120704e+01       0.000000e+00</code></pre>
+<p>Building and cross validation a naive linear model.</p>
+<pre class="r"><code>div1 &lt;- c(0,333,665,998,1330,1662,1994,2326,2658,2990)
+div2 &lt;- c(332,664,997,1329,1661,1993,2325,2657,2989,3328)
+div1;div2</code></pre>
+<pre><code>##  [1]    0  333  665  998 1330 1662 1994 2326 2658 2990</code></pre>
+<pre><code>##  [1]  332  664  997 1329 1661 1993 2325 2657 2989 3328</code></pre>
+<pre class="r"><code>shuf &lt;- sample(nrow(leagueData))
+leagueShuffed &lt;- leagueData[shuf,]</code></pre>
+<pre class="r"><code>error &lt;- c(1:10)
+error</code></pre>
+<pre><code>##  [1]  1  2  3  4  5  6  7  8  9 10</code></pre>
+<pre class="r"><code>for(j in 1:10){
+  
+  testing &lt;- leagueShuffed[c(div1[j]:div2[j]),]
+  training &lt;- leagueShuffed[-c(div1[j]:div2[j]),]
+  
+
+    mod &lt;- lm(LeagueIndex~., data = training)
+    yhat &lt;- predict(mod, newdata = testing)
+    MSE &lt;- mean( (yhat - testing$LeagueIndex)^2 )
+    error[j] &lt;- MSE
+
+}
+
+error</code></pre>
+<pre><code>##  [1] 0.9300085 0.8301405 0.8647285 0.9395159 0.8979064 0.9145124 0.8176298
+##  [8] 0.9554274 0.9930924 1.0857931</code></pre>
+<pre class="r"><code>which(error == min(error), arr.ind = TRUE);min(error)</code></pre>
+<pre><code>## [1] 7</code></pre>
+<pre><code>## [1] 0.8176298</code></pre>
+<pre class="r"><code>hist(error)</code></pre>
+<p><img src="/post/Starcraft-2-Random-Forest-Application/Starcraft-2-Random-Forest-Application_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
 
     </div>
 
@@ -745,7 +821,7 @@ a %&gt;% ggplot(mapping = aes(x = Value, fill = Distribution)) +
       
       
       <li>
-        <a href="https://twitter.com/intent/tweet?url=/post/r-markdown-first/2015-07-23-r-rmarkdown/&amp;text=Hello%20Blog%20Posts" target="_blank" rel="noopener" class="share-btn-twitter">
+        <a href="https://twitter.com/intent/tweet?url=/post/starcraft-2-random-forest-application/starcraft-2-random-forest-application/&amp;text=Starcraft%202%20Random%20Forest%20Application" target="_blank" rel="noopener" class="share-btn-twitter">
           <i class="fab fa-twitter"></i>
         </a>
       </li>
@@ -758,7 +834,7 @@ a %&gt;% ggplot(mapping = aes(x = Value, fill = Distribution)) +
       
       
       <li>
-        <a href="https://www.facebook.com/sharer.php?u=/post/r-markdown-first/2015-07-23-r-rmarkdown/&amp;t=Hello%20Blog%20Posts" target="_blank" rel="noopener" class="share-btn-facebook">
+        <a href="https://www.facebook.com/sharer.php?u=/post/starcraft-2-random-forest-application/starcraft-2-random-forest-application/&amp;t=Starcraft%202%20Random%20Forest%20Application" target="_blank" rel="noopener" class="share-btn-facebook">
           <i class="fab fa-facebook"></i>
         </a>
       </li>
@@ -771,7 +847,7 @@ a %&gt;% ggplot(mapping = aes(x = Value, fill = Distribution)) +
       
       
       <li>
-        <a href="mailto:?subject=Hello%20Blog%20Posts&amp;body=/post/r-markdown-first/2015-07-23-r-rmarkdown/" target="_blank" rel="noopener" class="share-btn-email">
+        <a href="mailto:?subject=Starcraft%202%20Random%20Forest%20Application&amp;body=/post/starcraft-2-random-forest-application/starcraft-2-random-forest-application/" target="_blank" rel="noopener" class="share-btn-email">
           <i class="fas fa-envelope"></i>
         </a>
       </li>
@@ -784,7 +860,7 @@ a %&gt;% ggplot(mapping = aes(x = Value, fill = Distribution)) +
       
       
       <li>
-        <a href="https://www.linkedin.com/shareArticle?url=/post/r-markdown-first/2015-07-23-r-rmarkdown/&amp;title=Hello%20Blog%20Posts" target="_blank" rel="noopener" class="share-btn-linkedin">
+        <a href="https://www.linkedin.com/shareArticle?url=/post/starcraft-2-random-forest-application/starcraft-2-random-forest-application/&amp;title=Starcraft%202%20Random%20Forest%20Application" target="_blank" rel="noopener" class="share-btn-linkedin">
           <i class="fab fa-linkedin-in"></i>
         </a>
       </li>
@@ -797,7 +873,7 @@ a %&gt;% ggplot(mapping = aes(x = Value, fill = Distribution)) +
       
       
       <li>
-        <a href="whatsapp://send?text=Hello%20Blog%20Posts%20/post/r-markdown-first/2015-07-23-r-rmarkdown/" target="_blank" rel="noopener" class="share-btn-whatsapp">
+        <a href="whatsapp://send?text=Starcraft%202%20Random%20Forest%20Application%20/post/starcraft-2-random-forest-application/starcraft-2-random-forest-application/" target="_blank" rel="noopener" class="share-btn-whatsapp">
           <i class="fab fa-whatsapp"></i>
         </a>
       </li>
@@ -810,7 +886,7 @@ a %&gt;% ggplot(mapping = aes(x = Value, fill = Distribution)) +
       
       
       <li>
-        <a href="https://service.weibo.com/share/share.php?url=/post/r-markdown-first/2015-07-23-r-rmarkdown/&amp;title=Hello%20Blog%20Posts" target="_blank" rel="noopener" class="share-btn-weibo">
+        <a href="https://service.weibo.com/share/share.php?url=/post/starcraft-2-random-forest-application/starcraft-2-random-forest-application/&amp;title=Starcraft%202%20Random%20Forest%20Application" target="_blank" rel="noopener" class="share-btn-weibo">
           <i class="fab fa-weibo"></i>
         </a>
       </li>
@@ -947,7 +1023,7 @@ a %&gt;% ggplot(mapping = aes(x = Value, fill = Distribution)) +
     <h3>Related</h3>
     <ul>
       
-      <li><a href="/post/starcraft-2-random-forest-application/starcraft-2-random-forest-application/">Starcraft 2 Random Forest Application</a></li>
+      <li><a href="/post/r-markdown-first/2015-07-23-r-rmarkdown/">Hello Blog Posts</a></li>
       
     </ul>
   </div>
