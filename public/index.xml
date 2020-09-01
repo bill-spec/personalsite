@@ -77,37 +77,9 @@
     </item>
     
     <item>
-      <title>Hello Blog Posts</title>
-      <link>/post/r-markdown-first/2015-07-23-r-rmarkdown/</link>
-      <pubDate>Thu, 23 Jul 2020 21:13:14 -0500</pubDate>
-      <guid>/post/r-markdown-first/2015-07-23-r-rmarkdown/</guid>
-      <description>
-
-
-&lt;div id=&#34;r-markdown&#34; class=&#34;section level1&#34;&gt;
-&lt;h1&gt;R Markdown&lt;/h1&gt;
-&lt;p&gt;This is an Rmarkdown first post to test.&lt;/p&gt;
-&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;set.seed(343)
-x1 &amp;lt;- rnorm(10000, 5, 1.5)
-x2 &amp;lt;- rnorm(10000, 7, 1.5)
-a &amp;lt;- as.data.frame(cbind(x1,x2)) %&amp;gt;% 
-  pivot_longer(cols  =c(x1,x2), names_to = &amp;quot;Distribution&amp;quot;, values_to = &amp;quot;Value&amp;quot;) %&amp;gt;% 
-  mutate(Distribution = as.factor(Distribution))
-
-a %&amp;gt;% ggplot(mapping = aes(x = Value, fill = Distribution)) +
-  geom_histogram(bins = 50, position = &amp;quot;identity&amp;quot;, alpha = 0.7)+
-  ylab(&amp;quot;Frequency&amp;quot;)+
-  theme_stata()+
-  scale_fill_discrete(labels = c(&amp;quot;Red Hill&amp;quot;, &amp;quot;Blue Hill&amp;quot;))&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;/post/R-Markdown-first/2015-07-23-r-rmarkdown_files/figure-html/unnamed-chunk-1-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
-&lt;/div&gt;
-</description>
-    </item>
-    
-    <item>
       <title>Starcraft 2 Random Forest Application</title>
       <link>/post/starcraft-2-random-forest-application/starcraft-2-random-forest-application/</link>
-      <pubDate>Thu, 23 Jul 2020 21:13:14 -0500</pubDate>
+      <pubDate>Sun, 23 Aug 2020 21:13:14 -0500</pubDate>
       <guid>/post/starcraft-2-random-forest-application/starcraft-2-random-forest-application/</guid>
       <description>
 
@@ -139,7 +111,7 @@ a %&amp;gt;% ggplot(mapping = aes(x = Value, fill = Distribution)) +
 ## $ ComplexUnitsMade   &amp;lt;dbl&amp;gt; 0.000238011, 0.000000000, 0.000041500, 0.0000000...
 ## $ ComplexAbilityUsed &amp;lt;dbl&amp;gt; 0.00194820, 0.00001680, 0.00029913, 0.00000000, ...
 ## $ MaxTimeStamp       &amp;lt;int&amp;gt; 113440, 59644, 120348, 78752, 93984, 57812, 8542...&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;The GGally library creates appealing graphics for simple correlation analysis, something that base R seriously lacks. I make use of it here to manuely make note of varible importance. APM and Action Latency certainly stand out, interestingly, the TotalMapExplored variable had near no correlation to LeagueIndex.&lt;/p&gt;
+&lt;p&gt;The GGally library creates appealing graphics for simple correlation analysis, something that base R seriously lacks. I make use of it here to manuely make note of varible importance. APM and Action Latency certainly stand out, interestingly, the TotalMapExplored variable had near no correlation to LeagueIndex, something I would not have thought as often better players spend their time scouting around the map.&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;ggcorr(leagueData[,1:19], method = c(&amp;quot;everything&amp;quot;, &amp;quot;pearson&amp;quot;), geom = &amp;quot;tile&amp;quot;,layout.exp = 4, nbreaks = 5, hjust = 1) +
   theme(legend.position = &amp;quot;right&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;&lt;img src=&#34;/post/Starcraft-2-Random-Forest-Application/Starcraft-2-Random-Forest-Application_files/figure-html/unnamed-chunk-2-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
@@ -149,9 +121,12 @@ a %&amp;gt;% ggplot(mapping = aes(x = Value, fill = Distribution)) +
   ggpairs(columns = c(&amp;quot;LeagueIndex&amp;quot;,&amp;quot;APM&amp;quot;,&amp;quot;ActionLatency&amp;quot;),ggplot2::aes(colour=LeagueIndex, alpha = 0.2),progress = FALSE) 
 suppressMessages(print(pairPlot))&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;&lt;img src=&#34;/post/Starcraft-2-Random-Forest-Application/Starcraft-2-Random-Forest-Application_files/figure-html/unnamed-chunk-3-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
-&lt;p&gt;For simplicity I only decided to use one regularization technique, the lasso (least absolute shrinkage and selection operator; what a cool name). I made use of the glmnet package for most of the heavy lifting and interpret the results below.&lt;/p&gt;
+&lt;p&gt;For simplicity, I only decided to use one regularization technique, the lasso (least absolute shrinkage and selection operator; what a cool name). I made use of the glmnet package for most of the heavy lifting and interpret the results below.&lt;/p&gt;
 &lt;p&gt;The LASSO solves the following equation:&lt;/p&gt;
-&lt;p&gt;Minimize &lt;span class=&#34;math display&#34;&gt;\[\{\sum_{i=1}^{n}(y_i-\beta_0-\sum_{j=1}^{p}\beta_jx_ij \}\]&lt;/span&gt; Subject To &lt;span class=&#34;math display&#34;&gt;\[\sum_{j=1}^{p}|\beta_j| \le s\]&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;Minimize
+&lt;span class=&#34;math inline&#34;&gt;\(\{\sum_{i=1}^{n}(y_i-\beta_0-\sum_{j=1}^{p}\beta_jx_{ij}\}\)&lt;/span&gt;
+Subject To
+&lt;span class=&#34;math inline&#34;&gt;\(\sum_{j=1}^{p}|\beta_j| \le s\)&lt;/span&gt;&lt;/p&gt;
 &lt;p&gt;Which is a regular least squares regression with a penalty of &lt;span class=&#34;math inline&#34;&gt;\(s\)&lt;/span&gt; given to large coefficients. This method can be used to introduce bias to a model that is dominated by singular large coefficients and it will also sent insigifigant variable coefficients to 0.&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;set.seed(343)
 shuf &amp;lt;- sample(1:nrow(leagueData))
@@ -189,10 +164,7 @@ lassoCoef&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;Building and cross validation a naive linear model.&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;div1 &amp;lt;- c(0,333,665,998,1330,1662,1994,2326,2658,2990)
 div2 &amp;lt;- c(332,664,997,1329,1661,1993,2325,2657,2989,3328)
-div1;div2&lt;/code&gt;&lt;/pre&gt;
-&lt;pre&gt;&lt;code&gt;##  [1]    0  333  665  998 1330 1662 1994 2326 2658 2990&lt;/code&gt;&lt;/pre&gt;
-&lt;pre&gt;&lt;code&gt;##  [1]  332  664  997 1329 1661 1993 2325 2657 2989 3328&lt;/code&gt;&lt;/pre&gt;
-&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;shuf &amp;lt;- sample(nrow(lassoData))
+shuf &amp;lt;- sample(nrow(lassoData))
 leagueShuffed &amp;lt;- lassoData[shuf,]&lt;/code&gt;&lt;/pre&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;error &amp;lt;- c(1:10)
 for(j in 1:10){
@@ -212,14 +184,11 @@ which(error == min(error), arr.ind = TRUE);min(error)&lt;/code&gt;&lt;/pre&gt;
     theme_light()&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;&lt;img src=&#34;/post/Starcraft-2-Random-Forest-Application/Starcraft-2-Random-Forest-Application_files/figure-html/unnamed-chunk-8-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;Building and cross validation a Random Forest Regression Model.&lt;/p&gt;
-&lt;p&gt;Manual cross-validation for both the error rate and the mtry parameter. The default for the mtry of this packages is &lt;span class=&#34;math inline&#34;&gt;\(\sqrt p\)&lt;/span&gt; which would be &lt;span class=&#34;math inline&#34;&gt;\(4.5\)&lt;/span&gt;, however, cross validation found anything between &lt;span class=&#34;math inline&#34;&gt;\(3\)&lt;/span&gt; and &lt;span class=&#34;math inline&#34;&gt;\(9\)&lt;/span&gt; provided the best results. It can be seen that this model outperforms the linear model that came before.&lt;/p&gt;
+&lt;p&gt;Manual cross-validation for both the error rate and the mtry parameter. The default for the mtry of this packages is &lt;span class=&#34;math inline&#34;&gt;\(\sqrt p\)&lt;/span&gt; which would be &lt;span class=&#34;math inline&#34;&gt;\(4.5\)&lt;/span&gt;, however, cross validation found anything between &lt;span class=&#34;math inline&#34;&gt;\(3\)&lt;/span&gt; and &lt;span class=&#34;math inline&#34;&gt;\(9\)&lt;/span&gt; provided the best results. Here I set mtry to 5, and didn’t tune it directly in this file. It can be seen that this model outperforms the linear model that came before, but not significantly.&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;set.seed(343)
 div1 &amp;lt;- c(0,333,665,998,1330,1662,1994,2326,2658,2990)
 div2 &amp;lt;- c(332,664,997,1329,1661,1993,2325,2657,2989,3328)
-div1;div2&lt;/code&gt;&lt;/pre&gt;
-&lt;pre&gt;&lt;code&gt;##  [1]    0  333  665  998 1330 1662 1994 2326 2658 2990&lt;/code&gt;&lt;/pre&gt;
-&lt;pre&gt;&lt;code&gt;##  [1]  332  664  997 1329 1661 1993 2325 2657 2989 3328&lt;/code&gt;&lt;/pre&gt;
-&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;shuf &amp;lt;- sample(nrow(lassoData))
+shuf &amp;lt;- sample(nrow(lassoData))
 leagueShuffed &amp;lt;- leagueData[shuf,]&lt;/code&gt;&lt;/pre&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;error2 &amp;lt;- c(1:10)
 for(j in 1:10){
@@ -241,6 +210,34 @@ which(error2 == min(error), arr.ind = TRUE);min(error2)&lt;/code&gt;&lt;/pre&gt;
     ylab(&amp;quot;Frequency&amp;quot;)+
     theme_light()&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;&lt;img src=&#34;/post/Starcraft-2-Random-Forest-Application/Starcraft-2-Random-Forest-Application_files/figure-html/unnamed-chunk-10-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Hello Blog Posts</title>
+      <link>/post/r-markdown-first/2015-07-23-r-rmarkdown/</link>
+      <pubDate>Thu, 23 Jul 2020 21:13:14 -0500</pubDate>
+      <guid>/post/r-markdown-first/2015-07-23-r-rmarkdown/</guid>
+      <description>
+
+
+&lt;div id=&#34;r-markdown&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;R Markdown&lt;/h1&gt;
+&lt;p&gt;This is an Rmarkdown first post to test.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;set.seed(343)
+x1 &amp;lt;- rnorm(10000, 5, 1.5)
+x2 &amp;lt;- rnorm(10000, 7, 1.5)
+a &amp;lt;- as.data.frame(cbind(x1,x2)) %&amp;gt;% 
+  pivot_longer(cols  =c(x1,x2), names_to = &amp;quot;Distribution&amp;quot;, values_to = &amp;quot;Value&amp;quot;) %&amp;gt;% 
+  mutate(Distribution = as.factor(Distribution))
+
+a %&amp;gt;% ggplot(mapping = aes(x = Value, fill = Distribution)) +
+  geom_histogram(bins = 50, position = &amp;quot;identity&amp;quot;, alpha = 0.7)+
+  ylab(&amp;quot;Frequency&amp;quot;)+
+  theme_stata()+
+  scale_fill_discrete(labels = c(&amp;quot;Red Hill&amp;quot;, &amp;quot;Blue Hill&amp;quot;))&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/post/R-Markdown-first/2015-07-23-r-rmarkdown_files/figure-html/unnamed-chunk-1-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;/div&gt;
 </description>
     </item>
     

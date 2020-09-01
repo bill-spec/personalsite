@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Posts | Bill Lang</title>
-    <link>/post/</link>
-      <atom:link href="/post/index.xml" rel="self" type="application/rss+xml" />
-    <description>Posts</description>
+    <title>Data Analysis | Bill Lang</title>
+    <link>/tag/data-analysis/</link>
+      <atom:link href="/tag/data-analysis/index.xml" rel="self" type="application/rss+xml" />
+    <description>Data Analysis</description>
     <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><lastBuildDate>Sun, 23 Aug 2020 21:13:14 -0500</lastBuildDate>
     <image>
       <url>/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_2.png</url>
-      <title>Posts</title>
-      <link>/post/</link>
+      <title>Data Analysis</title>
+      <link>/tag/data-analysis/</link>
     </image>
     
     <item>
@@ -146,34 +146,6 @@ which(error2 == min(error), arr.ind = TRUE);min(error2)&lt;/code&gt;&lt;/pre&gt;
     ylab(&amp;quot;Frequency&amp;quot;)+
     theme_light()&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;&lt;img src=&#34;/post/Starcraft-2-Random-Forest-Application/Starcraft-2-Random-Forest-Application_files/figure-html/unnamed-chunk-10-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>Hello Blog Posts</title>
-      <link>/post/r-markdown-first/2015-07-23-r-rmarkdown/</link>
-      <pubDate>Thu, 23 Jul 2020 21:13:14 -0500</pubDate>
-      <guid>/post/r-markdown-first/2015-07-23-r-rmarkdown/</guid>
-      <description>
-
-
-&lt;div id=&#34;r-markdown&#34; class=&#34;section level1&#34;&gt;
-&lt;h1&gt;R Markdown&lt;/h1&gt;
-&lt;p&gt;This is an Rmarkdown first post to test.&lt;/p&gt;
-&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;set.seed(343)
-x1 &amp;lt;- rnorm(10000, 5, 1.5)
-x2 &amp;lt;- rnorm(10000, 7, 1.5)
-a &amp;lt;- as.data.frame(cbind(x1,x2)) %&amp;gt;% 
-  pivot_longer(cols  =c(x1,x2), names_to = &amp;quot;Distribution&amp;quot;, values_to = &amp;quot;Value&amp;quot;) %&amp;gt;% 
-  mutate(Distribution = as.factor(Distribution))
-
-a %&amp;gt;% ggplot(mapping = aes(x = Value, fill = Distribution)) +
-  geom_histogram(bins = 50, position = &amp;quot;identity&amp;quot;, alpha = 0.7)+
-  ylab(&amp;quot;Frequency&amp;quot;)+
-  theme_stata()+
-  scale_fill_discrete(labels = c(&amp;quot;Red Hill&amp;quot;, &amp;quot;Blue Hill&amp;quot;))&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;/post/R-Markdown-first/2015-07-23-r-rmarkdown_files/figure-html/unnamed-chunk-1-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
-&lt;/div&gt;
 </description>
     </item>
     

@@ -1,9 +1,9 @@
 ---
 title: "Starcraft 2 Random Forest Application"
 author: "Bill Lang"
-date: 2020-07-23T21:13:14-05:00
-categories: [""]
-tags: [""]
+date: 2020-08-23T21:13:14-05:00
+categories: ["Personal Project"]
+tags: ["Machine Learning","Data Analysis"]
 ---
 
 ```{r setup, include=FALSE}
@@ -13,6 +13,7 @@ library(glmnet)
 library(GGally)
 library(randomForest)
 library(ggthemes)
+library()
 load(file = "cleanedLeague.RData")
 ```
 
@@ -28,7 +29,7 @@ The dataset sourced [here](http://archive.ics.uci.edu/ml/datasets/SkillCraft1%20
 glimpse(leagueData)
 ```
 
-The GGally library creates appealing graphics for simple correlation analysis, something that base R seriously lacks. I make use of it here to manuely make note of varible importance. APM and Action Latency certainly stand out, interestingly, the TotalMapExplored variable had near no correlation to LeagueIndex.
+The GGally library creates appealing graphics for simple correlation analysis, something that base R seriously lacks. I make use of it here to manuely make note of varible importance. APM and Action Latency certainly stand out, interestingly, the TotalMapExplored variable had near no correlation to LeagueIndex, something I would not have thought as often better players spend their time scouting around the map.
 
 ```{r}
 ggcorr(leagueData[,1:19], method = c("everything", "pearson"), geom = "tile",layout.exp = 4, nbreaks = 5, hjust = 1) +
@@ -45,11 +46,14 @@ suppressMessages(print(pairPlot))
 ```
 
 
-For simplicity I only decided to use one regularization technique, the lasso (least absolute shrinkage and selection operator; what a cool name). I made use of the glmnet package for most of the heavy lifting and interpret the results below.
+For simplicity, I only decided to use one regularization technique, the lasso (least absolute shrinkage and selection operator; what a cool name). I made use of the glmnet package for most of the heavy lifting and interpret the results below.
 
 The LASSO solves the following equation: 
 
-Minimize $$\{\sum_{i=1}^{n}(y_i-\beta_0-\sum_{j=1}^{p}\beta_jx_ij \}$$ Subject To $$\sum_{j=1}^{p}|\beta_j| \le s$$
+Minimize 
+$\{\sum_{i=1}^{n}(y_i-\beta_0-\sum_{j=1}^{p}\beta_jx_{ij}\}$ 
+Subject To 
+$\sum_{j=1}^{p}|\beta_j| \le s$
 
 Which is a regular least squares regression with a penalty of $s$ given to large coefficients. This method can be used to introduce bias to a model that is dominated by singular large coefficients and it will also sent insigifigant variable coefficients to 0.
 
@@ -91,7 +95,6 @@ Building and cross validation a naive linear model.
 ```{r}
 div1 <- c(0,333,665,998,1330,1662,1994,2326,2658,2990)
 div2 <- c(332,664,997,1329,1661,1993,2325,2657,2989,3328)
-div1;div2
 shuf <- sample(nrow(lassoData))
 leagueShuffed <- lassoData[shuf,]
 ```
@@ -117,13 +120,12 @@ ggplot(as.data.frame(error), aes(x=error)) + geom_histogram(bins = 10,color="bla
 Building and cross validation a Random Forest Regression Model.
 
 
-Manual cross-validation for both the error rate and the mtry parameter. The default for the mtry of this packages is $\sqrt p$ which would be $4.5$, however, cross validation found anything between $3$ and $9$ provided the best results. It can be seen that this model outperforms the linear model that came before. 
+Manual cross-validation for both the error rate and the mtry parameter. The default for the mtry of this packages is $\sqrt p$ which would be $4.5$, however, cross validation found anything between $3$ and $9$ provided the best results. Here I set mtry to 5, and didn't tune it directly in this file. It can be seen that this model outperforms the linear model that came before, but not significantly.
 
 ```{r}
 set.seed(343)
 div1 <- c(0,333,665,998,1330,1662,1994,2326,2658,2990)
 div2 <- c(332,664,997,1329,1661,1993,2325,2657,2989,3328)
-div1;div2
 shuf <- sample(nrow(lassoData))
 leagueShuffed <- leagueData[shuf,]
 ```

@@ -43,6 +43,9 @@
 
   
   
+  
+  <script src="/js/mathjax-config.js"></script>
+  
 
   
   
@@ -171,9 +174,9 @@
 
       
       
-        
-      
 
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js" integrity="" crossorigin="anonymous" async></script>
       
     
       
@@ -237,9 +240,9 @@
   <meta property="twitter:image" content="/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_2.png"><meta property="og:locale" content="en-us">
   
     
-      <meta property="article:published_time" content="2020-07-23T21:13:14-05:00">
+      <meta property="article:published_time" content="2020-08-23T21:13:14-05:00">
     
-    <meta property="article:modified_time" content="2020-07-23T21:13:14-05:00">
+    <meta property="article:modified_time" content="2020-08-23T21:13:14-05:00">
   
 
   
@@ -267,8 +270,8 @@
   },
   "headline": "Starcraft 2 Random Forest Application",
   
-  "datePublished": "2020-07-23T21:13:14-05:00",
-  "dateModified": "2020-07-23T21:13:14-05:00",
+  "datePublished": "2020-08-23T21:13:14-05:00",
+  "dateModified": "2020-08-23T21:13:14-05:00",
   
   "author": {
     "@type": "Person",
@@ -617,7 +620,7 @@
     
       
     
-    Jul 23, 2020
+    Aug 23, 2020
   </span>
   
 
@@ -626,7 +629,7 @@
   
   <span class="middot-divider"></span>
   <span class="article-reading-time">
-    6 min read
+    5 min read
   </span>
   
 
@@ -638,7 +641,7 @@
   
   <span class="middot-divider"></span>
   <span class="article-categories">
-    <i class="fas fa-folder mr-1"></i><a href="/categories/">Categories</a></span>
+    <i class="fas fa-folder mr-1"></i><a href="/category/personal-project/">Personal Project</a></span>
   
 
 </div>
@@ -696,7 +699,7 @@
 ## $ ComplexUnitsMade   &lt;dbl&gt; 0.000238011, 0.000000000, 0.000041500, 0.0000000...
 ## $ ComplexAbilityUsed &lt;dbl&gt; 0.00194820, 0.00001680, 0.00029913, 0.00000000, ...
 ## $ MaxTimeStamp       &lt;int&gt; 113440, 59644, 120348, 78752, 93984, 57812, 8542...</code></pre>
-<p>The GGally library creates appealing graphics for simple correlation analysis, something that base R seriously lacks. I make use of it here to manuely make note of varible importance. APM and Action Latency certainly stand out, interestingly, the TotalMapExplored variable had near no correlation to LeagueIndex.</p>
+<p>The GGally library creates appealing graphics for simple correlation analysis, something that base R seriously lacks. I make use of it here to manuely make note of varible importance. APM and Action Latency certainly stand out, interestingly, the TotalMapExplored variable had near no correlation to LeagueIndex, something I would not have thought as often better players spend their time scouting around the map.</p>
 <pre class="r"><code>ggcorr(leagueData[,1:19], method = c(&quot;everything&quot;, &quot;pearson&quot;), geom = &quot;tile&quot;,layout.exp = 4, nbreaks = 5, hjust = 1) +
   theme(legend.position = &quot;right&quot;)</code></pre>
 <p><img src="/post/Starcraft-2-Random-Forest-Application/Starcraft-2-Random-Forest-Application_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
@@ -706,9 +709,12 @@
   ggpairs(columns = c(&quot;LeagueIndex&quot;,&quot;APM&quot;,&quot;ActionLatency&quot;),ggplot2::aes(colour=LeagueIndex, alpha = 0.2),progress = FALSE) 
 suppressMessages(print(pairPlot))</code></pre>
 <p><img src="/post/Starcraft-2-Random-Forest-Application/Starcraft-2-Random-Forest-Application_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
-<p>For simplicity I only decided to use one regularization technique, the lasso (least absolute shrinkage and selection operator; what a cool name). I made use of the glmnet package for most of the heavy lifting and interpret the results below.</p>
+<p>For simplicity, I only decided to use one regularization technique, the lasso (least absolute shrinkage and selection operator; what a cool name). I made use of the glmnet package for most of the heavy lifting and interpret the results below.</p>
 <p>The LASSO solves the following equation:</p>
-<p>Minimize <span class="math display">\[\{\sum_{i=1}^{n}(y_i-\beta_0-\sum_{j=1}^{p}\beta_jx_ij \}\]</span> Subject To <span class="math display">\[\sum_{j=1}^{p}|\beta_j| \le s\]</span></p>
+<p>Minimize
+<span class="math inline">\(\{\sum_{i=1}^{n}(y_i-\beta_0-\sum_{j=1}^{p}\beta_jx_{ij}\}\)</span>
+Subject To
+<span class="math inline">\(\sum_{j=1}^{p}|\beta_j| \le s\)</span></p>
 <p>Which is a regular least squares regression with a penalty of <span class="math inline">\(s\)</span> given to large coefficients. This method can be used to introduce bias to a model that is dominated by singular large coefficients and it will also sent insigifigant variable coefficients to 0.</p>
 <pre class="r"><code>set.seed(343)
 shuf &lt;- sample(1:nrow(leagueData))
@@ -746,10 +752,7 @@ lassoCoef</code></pre>
 <p>Building and cross validation a naive linear model.</p>
 <pre class="r"><code>div1 &lt;- c(0,333,665,998,1330,1662,1994,2326,2658,2990)
 div2 &lt;- c(332,664,997,1329,1661,1993,2325,2657,2989,3328)
-div1;div2</code></pre>
-<pre><code>##  [1]    0  333  665  998 1330 1662 1994 2326 2658 2990</code></pre>
-<pre><code>##  [1]  332  664  997 1329 1661 1993 2325 2657 2989 3328</code></pre>
-<pre class="r"><code>shuf &lt;- sample(nrow(lassoData))
+shuf &lt;- sample(nrow(lassoData))
 leagueShuffed &lt;- lassoData[shuf,]</code></pre>
 <pre class="r"><code>error &lt;- c(1:10)
 for(j in 1:10){
@@ -769,14 +772,11 @@ which(error == min(error), arr.ind = TRUE);min(error)</code></pre>
     theme_light()</code></pre>
 <p><img src="/post/Starcraft-2-Random-Forest-Application/Starcraft-2-Random-Forest-Application_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
 <p>Building and cross validation a Random Forest Regression Model.</p>
-<p>Manual cross-validation for both the error rate and the mtry parameter. The default for the mtry of this packages is <span class="math inline">\(\sqrt p\)</span> which would be <span class="math inline">\(4.5\)</span>, however, cross validation found anything between <span class="math inline">\(3\)</span> and <span class="math inline">\(9\)</span> provided the best results. It can be seen that this model outperforms the linear model that came before.</p>
+<p>Manual cross-validation for both the error rate and the mtry parameter. The default for the mtry of this packages is <span class="math inline">\(\sqrt p\)</span> which would be <span class="math inline">\(4.5\)</span>, however, cross validation found anything between <span class="math inline">\(3\)</span> and <span class="math inline">\(9\)</span> provided the best results. Here I set mtry to 5, and didn’t tune it directly in this file. It can be seen that this model outperforms the linear model that came before, but not significantly.</p>
 <pre class="r"><code>set.seed(343)
 div1 &lt;- c(0,333,665,998,1330,1662,1994,2326,2658,2990)
 div2 &lt;- c(332,664,997,1329,1661,1993,2325,2657,2989,3328)
-div1;div2</code></pre>
-<pre><code>##  [1]    0  333  665  998 1330 1662 1994 2326 2658 2990</code></pre>
-<pre><code>##  [1]  332  664  997 1329 1661 1993 2325 2657 2989 3328</code></pre>
-<pre class="r"><code>shuf &lt;- sample(nrow(lassoData))
+shuf &lt;- sample(nrow(lassoData))
 leagueShuffed &lt;- leagueData[shuf,]</code></pre>
 <pre class="r"><code>error2 &lt;- c(1:10)
 for(j in 1:10){
@@ -809,7 +809,9 @@ which(error2 == min(error), arr.ind = TRUE);min(error2)</code></pre>
 
 <div class="article-tags">
   
-  <a class="badge badge-light" href="/tags/">Tags</a>
+  <a class="badge badge-light" href="/tag/data-analysis/">Data Analysis</a>
+  
+  <a class="badge badge-light" href="/tag/machine-learning/">Machine Learning</a>
   
 </div>
 
@@ -1006,15 +1008,6 @@ which(error2 == min(error), arr.ind = TRUE);min(error2)</code></pre>
 
 
   
-  
-  <div class="article-widget content-widget-hr">
-    <h3>Related</h3>
-    <ul>
-      
-      <li><a href="/post/r-markdown-first/2015-07-23-r-rmarkdown/">Hello Blog Posts</a></li>
-      
-    </ul>
-  </div>
   
 
 

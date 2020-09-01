@@ -28,17 +28,42 @@
   </url>
   
   <url>
-    <loc>/post/r-markdown-first/2015-07-23-r-rmarkdown/</loc>
-    <lastmod>2020-07-23T21:13:14-05:00</lastmod>
+    <loc>/categories/</loc>
+    <lastmod>2020-08-23T21:13:14-05:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tag/data-analysis/</loc>
+    <lastmod>2020-08-23T21:13:14-05:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tag/machine-learning/</loc>
+    <lastmod>2020-08-23T21:13:14-05:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/category/personal-project/</loc>
+    <lastmod>2020-08-23T21:13:14-05:00</lastmod>
   </url>
   
   <url>
     <loc>/post/</loc>
-    <lastmod>2020-07-23T21:13:14-05:00</lastmod>
+    <lastmod>2020-08-23T21:13:14-05:00</lastmod>
   </url>
   
   <url>
     <loc>/post/starcraft-2-random-forest-application/starcraft-2-random-forest-application/</loc>
+    <lastmod>2020-08-23T21:13:14-05:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/</loc>
+    <lastmod>2020-08-23T21:13:14-05:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/post/r-markdown-first/2015-07-23-r-rmarkdown/</loc>
     <lastmod>2020-07-23T21:13:14-05:00</lastmod>
   </url>
   
@@ -79,11 +104,6 @@
   
   <url>
     <loc>/tag/source-themes/</loc>
-    <lastmod>2019-04-07T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/tags/</loc>
     <lastmod>2019-04-07T00:00:00+00:00</lastmod>
   </url>
   
@@ -160,10 +180,6 @@
   <url>
     <loc>/publication/conference-paper/</loc>
     <lastmod>2013-07-01T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/categories/</loc>
   </url>
   
   <url>
