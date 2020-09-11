@@ -18,20 +18,20 @@ subtitle = ""
   icon = "r-project"
   icon_pack = "fab"
   name = "R"
-  description = "Experienced in general statistical analysis and adpet at general machine learning techniques."
+  description = "Experienced in statistical analysis, time series analysis, general machine learning techniques, and data cleaning."
+  
+  
+[[feature]]
+  icon = "java"
+  icon_pack = "fab"
+  name = "Java"
+  description = "Primary object oriented language experience. Taken two courses in data structures and algorithims in compliance with the University of Pittsburgh computer science minor."
   
 [[feature]]
   icon = "python"
   icon_pack = "fab"
   name = "Python"
   description = ""  
-  
-[[feature]]
-  icon = "java"
-  icon_pack = "fab"
-  name = "Java"
-  description = ""
-  
  
 
 # Uncomment to use custom SVG icons.
