@@ -27,11 +27,11 @@ subtitle = ""
   name = "Java"
   description = "Primary object oriented language experience. Taken two courses in data structures and algorithims in compliance with the University of Pittsburgh computer science minor."
   
-[[feature]]
-  icon = "python"
-  icon_pack = "fab"
-  name = "Python"
-  description = ""  
+#[[feature]]
+#  icon = "python"
+#  icon_pack = "fab"
+#  name = "Python"
+#  description = ""  
  
 
 # Uncomment to use custom SVG icons.
